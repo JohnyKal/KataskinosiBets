@@ -1,29 +1,40 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
-export interface IBet {
+export interface IUserAnswer {
+  bet: Types.ObjectId;
+  answer: string;
   time: Date;
-  answer: any;
 }
 
 export interface IUser extends Document {
   name: string;
   password: string;
   score: number;
-  bets: IBet[];
+  answers: IUserAnswer[];
 }
 
-const betSchema = new Schema<IBet>(
+const userAnswerSchema = new Schema<IUserAnswer>(
   {
+    bet: {
+      type: Schema.Types.ObjectId,
+      ref: "Bet",
+      required: true,
+    },
+
+    answer: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
     time: {
       type: Date,
-      required: true,
-    },
-    answer: {
-      type: Schema.Types.Mixed, // allows any type
-      required: true,
+      default: Date.now,
     },
   },
-  { _id: false } // don't create an _id for every bet
+  {
+    _id: false,
+  }
 );
 
 const userSchema = new Schema<IUser>({
@@ -31,6 +42,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     trim: true,
+    unique: true,
   },
 
   password: {
@@ -45,8 +57,8 @@ const userSchema = new Schema<IUser>({
     min: 0,
   },
 
-  bets: {
-    type: [betSchema],
+  answers: {
+    type: [userAnswerSchema],
     default: [],
   },
 });
