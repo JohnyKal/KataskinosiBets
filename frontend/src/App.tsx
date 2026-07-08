@@ -1,122 +1,143 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import Login from "./Login.tsx";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Signup from "./Register.tsx";
+import Home from "./Home.tsx";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarContent,
+  MenubarGroup,
+  MenubarItem,
+  MenubarTrigger,
+} from "../@/components/ui/menubar";
+import {
+  Sheet,
+  SheetFooter,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../@/components/ui/sheet";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const checkAuth = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/auth/me`, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Not authenticated");
+      const data = await res.json();
+      setUser(data.user);
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    checkAuth();
+  }, []);
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="bg-linear-to-b from-[hsl(243,88%,13%)] to-[hsl(243,66%,14%)] h-screen">
+      <BrowserRouter>
+        <Menubar className="border-0 p-0">
+          <MenubarMenu>
+            <MenubarTrigger>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#e3e3e3"
+              >
+                <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
+              </svg>
+            </MenubarTrigger>
+            <MenubarContent>
+              <MenubarGroup>
+                <Link to="/">
+                  <MenubarItem>Home</MenubarItem>
+                </Link>
+                <Link to="/signin">
+                  <MenubarItem>Login</MenubarItem>
+                </Link>
+                <Link to="/register">
+                  <MenubarItem>Register</MenubarItem>
+                </Link>
+              </MenubarGroup>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
 
-      <div className="ticks"></div>
+        <Sheet>
+          <SheetTrigger className="text-white">
+            Guide
+          </SheetTrigger>
+          <SheetContent className="bg-[hsl(0,0%,20%)] text-white">
+            <SheetHeader>
+              <SheetTitle className="text-white">Quick tutorial to use this app</SheetTitle>
+              <SheetDescription>
+                <p>
+                  TimerLink is a link hosting platform that allows users to
+                  create links dynamically pointing to different things based on
+                  dates.
+                </p>
+              </SheetDescription>
+            </SheetHeader>
+            <p>1) First click the "Create New" button to start working on your link.</p>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+<p>
+On the edit page,
+2) make a title (to recognize it easier in the future), <br />
+3) click on the "Add Target", place a url, <br />
+4) <strong>check the "start" and the "end"</strong>, and pick the dates for that url to be online.
+</p>
+<p>
+You can add as many targets as needed!
+</p>
+<p>
+5) Finaly click the "Save" button and you 'll navigate to the analytics page.
+</p>
+<p>
+The url bellow title (in the home page) is the link that will redirect to your urls based on the date 
+</p>
+<p>
+You can access the link's analytics clicking the title.
+</p>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+            <SheetFooter>
+              <p>
+                For any inconvinience, contanct us at{" "}
+                <strong>kallergisgiannis09@gmail.com</strong>
+              </p>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              loading ? (
+                <div className="text-[red]">WAIT for the page to load plzz...</div>
+              ) : user ? (
+                <Home />
+              ) : (
+                <Navigate to="/register" />
+              )
+            }
+          />
+          <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
+          <Route path="/register" element={<Signup checkAuth={checkAuth}/>} />
+          <Route path="/live_stoixima" element={<Home/>} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
-
-export default App

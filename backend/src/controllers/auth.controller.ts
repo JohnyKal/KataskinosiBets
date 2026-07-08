@@ -15,7 +15,6 @@ export async function register(req: Request, res: Response) {
     const user = new UserModel({
       //create new user
       name: data.name,
-
       password: data.password,
     });
 
