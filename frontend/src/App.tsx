@@ -44,7 +44,7 @@ export default function App() {
     checkAuth();
   }, []);
   return (
-    <div className="bg-green-500">
+    <div >
       <BrowserRouter>
         <Menubar className="border-0 p-0">
           <MenubarMenu>
