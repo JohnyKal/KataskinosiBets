@@ -26,18 +26,18 @@ export default function Signup({ checkAuth }: LoginProps) {
   return (
     <div className=" h-screen">
       <h1 className="text-white text-4xl font-bold text-center p-8">
-        Create futuristic links with Timerlink
+      Καλώς ήρθες! 🍀
       </h1>
-      <Card className="m-[8vw] shadow-xl/30 bg-white shadow-[0_0_3rem_hsl(279,94%,100%)] ">
+      <Card className="m-[8vw] shadow-xl/30 border-amber-50 bg-white shadow-[0_0_3rem_hsl(279,94%,100%)] ">
         <CardHeader>
           <CardTitle>
-            <h2>Get Started</h2>
+            <h2>ΕΓΓΡΑΦΗ</h2>
           </CardTitle>
           <CardDescription>
-            Complete the form and then login to your account
+            Φτιάξε ένα account και κατευθείαν συνδέσου σε αυτό
           </CardDescription>
           <CardAction>
-            <Link to="/signin"><small>Sign in</small></Link>
+            <Link to="/signin"><small>Σύνδεση</small></Link>
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -73,7 +73,7 @@ export default function Signup({ checkAuth }: LoginProps) {
             <Form autoComplete="on">
               <Field name="name" placeholder="Name" />
               <Field name="password" type="password" placeholder="Password (numbers only)" />
-              <button type="submit"><strong>Create Account</strong></button>
+              <button type="submit"><strong>Εγγραφή</strong></button>
             </Form>
           </Formik>
         </CardContent>

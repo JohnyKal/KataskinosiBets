@@ -25,18 +25,18 @@ export default function Login({ checkAuth }: LoginProps) {
   return (
     <div className=" h-screen">
       <h1 className="text-white  text-4xl font-bold text-center p-8">
-        We are glad you are back !
+        Συνδέσου γρήγορα να παίξεις! 🎰
       </h1>
-      <Card className="m-[8vw] shadow-xl/30  shadow-[0_0_3rem_hsl(279,94%,86%)] ">
+      <Card className="m-[8vw] shadow-xl/30 border-amber-50 bg-white shadow-[0_0_3rem_hsl(279,94%,100%)]">
         <CardHeader>
           <CardTitle>
-            <h2>Sign in</h2>
+            <h2>ΣΥΝΔΕΣΗ</h2>
           </CardTitle>
           <CardDescription>
-            Login to your existing account 
+            Σύνδεσου στο account που έχεις φτιάξει
           </CardDescription>
           <CardAction>
-            <Link to="/register"><small> Sign up</small></Link>
+            <Link to="/register"><small>Εγγραφή</small></Link>
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -68,7 +68,7 @@ export default function Login({ checkAuth }: LoginProps) {
             <Form autoComplete="on">
               <Field name="name" type="name" placeholder="name" />
               <Field name="password" type="password" placeholder="Password (numbers only)" />
-              <button type="submit"><strong>Sign in</strong></button>
+              <button type="submit"><strong>Σύδεση</strong></button>
             </Form>
           </Formik>
         </CardContent>
