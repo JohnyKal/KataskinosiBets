@@ -44,7 +44,7 @@ export default function App() {
     checkAuth();
   }, []);
   return (
-    <div className="bg-linear-to-b from-[hsl(243,88%,13%)] to-[hsl(243,66%,14%)] h-screen">
+    <div className="bg-green-500">
       <BrowserRouter>
         <Menubar className="border-0 p-0">
           <MenubarMenu>

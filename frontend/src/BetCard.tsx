@@ -82,7 +82,7 @@ export default function BetCard({
   }, []);
 
   return (
-    <Card className="m-[8vw] border-[hsl(242,73%,73%)] bg-white shadow-[0_0_3rem_hsl(279,94%,86%)]">
+    <Card className="m-[8vw] bg-white ">
       <CardHeader>
         <CardDescription>{bet.question}</CardDescription>
 
