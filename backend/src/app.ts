@@ -14,30 +14,24 @@ const allowedOrigins = [
   "http://localhost:3000",
 ];
 
-// app.use(
-//   cors({
-    
-//       origin: (origin, callback) => {
-//         // allow tools like Postman
-//         if (!origin) return callback(null, true);
-  
-//         // allow localhost
-//         if (allowedOrigins.includes(origin)) return callback(null, true);
-  
-//         // allow ALL Vercel preview deployments
-//         if (origin.endsWith(".vercel.app")) return callback(null, true);
-  
-//         return callback(new Error("Blocked by CORS"));
-//       }, // frontend URL
-//     credentials: true, // allow cookies to be sent
-//   })
-// );
 app.use(
-    cors({
-      origin: "http://localhost:5173",
-      credentials: true, // needed if you use cookies/JWT cookies
-    })
-  );
+  cors({
+    
+      origin: (origin, callback) => {
+        // allow tools like Postman
+        if (!origin) return callback(null, true);
+  
+        // allow localhost
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+  
+        // allow ALL Vercel preview deployments
+        if (origin.endsWith(".vercel.app")) return callback(null, true);
+  
+        return callback(new Error("Blocked by CORS"));
+      }, // frontend URL
+    credentials: true, // allow cookies to be sent
+  })
+);
 
 // Middleware
 app.use(express.json());
