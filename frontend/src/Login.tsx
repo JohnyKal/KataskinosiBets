@@ -25,9 +25,9 @@ export default function Login({ checkAuth }: LoginProps) {
   return (
     <div className=" h-screen">
       <h1 className="text-white  text-4xl font-bold text-center p-8">
-        Συνδέσου γρήγορα να παίξεις! 🎰
+        Συνδέσου γρήγορα να παίξεις! 🍀
       </h1>
-      <Card className="m-[8vw] shadow-xl/30 border-amber-50 bg-white shadow-[0_0_3rem_hsl(279,94%,100%)]">
+      <Card className="m-[8vw] shadow-xl/30 border-none bg-white shadow-[0_0_3rem_hsl(279,94%,100%)]">
         <CardHeader>
           <CardTitle>
             <h2>ΣΥΝΔΕΣΗ</h2>

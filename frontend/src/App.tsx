@@ -44,7 +44,7 @@ export default function App() {
     checkAuth();
   }, []);
   return (
-    <div className="bg-green-800">
+    <div className="bg-emerald-700">
       <BrowserRouter>
         <Menubar className="border-0 p-0">
           <MenubarMenu>
@@ -71,50 +71,30 @@ export default function App() {
                   <MenubarItem>Register</MenubarItem>
                 </Link>
               </MenubarGroup>
-            </MenubarContent>
+            </MenubarContent> 
           </MenubarMenu>
         </Menubar>
 
         <Sheet>
           <SheetTrigger className="text-white">
-            Guide
+            ΟΔΗΓΙΕΣ ΧΡΗΣΗΣ
           </SheetTrigger>
           <SheetContent className="bg-[hsl(0,0%,20%)] text-white">
             <SheetHeader>
-              <SheetTitle className="text-white">Quick tutorial to use this app</SheetTitle>
+              <SheetTitle className="text-white">Οδηγίες χρήσης για την στοιχιματική</SheetTitle>
               <SheetDescription>
                 <p>
-                  TimerLink is a link hosting platform that allows users to
-                  create links dynamically pointing to different things based on
-                  dates.
                 </p>
               </SheetDescription>
             </SheetHeader>
-            <p>1) First click the "Create New" button to start working on your link.</p>
-
-<p>
-On the edit page,
-2) make a title (to recognize it easier in the future), <br />
-3) click on the "Add Target", place a url, <br />
-4) <strong>check the "start" and the "end"</strong>, and pick the dates for that url to be online.
-</p>
-<p>
-You can add as many targets as needed!
-</p>
-<p>
-5) Finaly click the "Save" button and you 'll navigate to the analytics page.
-</p>
-<p>
-The url bellow title (in the home page) is the link that will redirect to your urls based on the date 
-</p>
-<p>
-You can access the link's analytics clicking the title.
-</p>
+            <p>Απλά βάλε στο κουτάκι, που ειναι κοντά σε κάθε ερώτηση,</p>
+            <p> την απάντηση σου που ειναι ή κάποια σκήνη ή κάποιο όνομα </p>
+            <p>ή ο,τιδήποτε μου καπνίσει</p>
+            <p> Μην το πολυσκέφτεσαι, η ιστοσελίδα ειναι ΑΠΛΗ και ΕΥΚΟΛΗ στην χρήση</p>
 
             <SheetFooter>
               <p>
-                For any inconvinience, contanct us at{" "}
-                <strong>kallergisgiannis09@gmail.com</strong>
+                Για οποιοδήποτε πρόβλημα ή απορία πάρτε με απόκρυψη ή στείλτε email 
               </p>
             </SheetFooter>
           </SheetContent>
