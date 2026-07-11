@@ -36,7 +36,9 @@ export default function Login({ checkAuth }: LoginProps) {
             Σύνδεσου στο account που έχεις φτιάξει
           </CardDescription>
           <CardAction>
-            <Link to="/register"><small>Εγγραφή</small></Link>
+            <Link to="/register">
+              <small>Εγγραφή</small>
+            </Link>
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -67,8 +69,14 @@ export default function Login({ checkAuth }: LoginProps) {
           >
             <Form autoComplete="on">
               <Field name="name" type="name" placeholder="name" />
-              <Field name="password" type="password" placeholder="Password (numbers only)" />
-              <button type="submit"><strong>Σύδεση</strong></button>
+              <Field
+                name="password"
+                type="password"
+                placeholder="Password (numbers only)"
+              />
+              <button type="submit">
+                <strong>Σύνδεση</strong>
+              </button>
             </Form>
           </Formik>
         </CardContent>

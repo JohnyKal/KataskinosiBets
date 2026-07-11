@@ -71,8 +71,8 @@ export default function Signup({ checkAuth }: LoginProps) {
             }}
           >
             <Form autoComplete="on">
-              <Field name="name" placeholder="Name" />
-              <Field name="password" type="password" placeholder="Password (numbers only)" />
+              <Field name="name" placeholder="Ονοματεπώνυμο" />
+              <Field name="password" type="password" placeholder="Password (μόνο ΑΡΙΘΜΟΥΣ)" />
               <button type="submit"><strong>Εγγραφή</strong></button>
             </Form>
           </Formik>

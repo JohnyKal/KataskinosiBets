@@ -105,7 +105,7 @@ export default function App() {
             path="/"
             element={
               loading ? (
-                <div className="text-[red]">WAIT for the page to load plzz...</div>
+                <div className="text-[red]">Περίμενε να φορτόσει η ιστοσελίδα απο το darkweb...</div>
               ) : user ? (
                 <Home />
               ) : (
