@@ -1,6 +1,7 @@
-import express from "express";
+
 import { connectDB } from "./db.js";
-const app = express();
+import app from "./app.js";
+
 const PORT = process.env.PORT || 3000;
 
 // Connect to MongoDB
