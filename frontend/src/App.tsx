@@ -247,7 +247,7 @@ export default function App() {
               ) : user ? (
                 <Home />
               ) : (
-                <Navigate to="/register" />
+                <Navigate to="/signin" />
               )
             }
           />

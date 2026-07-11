@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import answerRoutes from "./routes/answers.routes.js";
 import express, { type Application } from "express";
 import usersRoutes from "./routes/users.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 import type {
     Request,
     Response,
@@ -49,6 +50,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/ans", answerRoutes);
 app.use("/api/leaderboard", usersRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
