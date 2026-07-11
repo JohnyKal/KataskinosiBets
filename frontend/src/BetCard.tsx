@@ -55,7 +55,7 @@ export default function BetCard({
 
   const submitAnswer = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/answer`, {
+      const res = await fetch(`${API_URL}/api/ans/answer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

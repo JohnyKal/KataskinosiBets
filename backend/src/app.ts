@@ -11,7 +11,7 @@ import type {
 
 const app: Application = express();
 const allowedOrigins = [
-  "http://localhost:3000",
+  "http://localhost:5173",
 ];
 
 app.use(
@@ -46,7 +46,7 @@ app.get("/", (req, res) => {
 });
 // THIS LINE WIRES THE ROUTES
 app.use("/api/auth", authRoutes);
-app.use("/api", answerRoutes);
+app.use("/api/ans", answerRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);

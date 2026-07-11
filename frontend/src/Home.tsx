@@ -14,7 +14,7 @@ export default function Home() {
 
   const fetchBets = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/bets`, {
+      const res = await fetch(`${API_URL}/api/bets`, { // api/bets doesnt exist
         credentials: "include",
       });
 
