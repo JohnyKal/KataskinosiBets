@@ -21,8 +21,8 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4">
-
-      <h1 className="
+      <h1
+        className="
         text-white 
         text-4xl 
         md:text-5xl 
@@ -30,12 +30,13 @@ export default function Signup() {
         text-center 
         mb-8
         drop-shadow-[0_0_15px_rgba(255,215,0,0.7)]
-      ">
+      "
+      >
         Καλώς ήρθες! 🎰
       </h1>
 
-
-      <Card className="
+      <Card
+        className="
         w-full 
         max-w-md
         border-2 
@@ -45,25 +46,26 @@ export default function Signup() {
         to-gray-100
         shadow-[0_0_40px_rgba(255,215,0,0.35)]
         rounded-3xl
-      ">
-
+      "
+      >
         <CardHeader className="text-center">
-
-          <CardTitle className="
+          <CardTitle
+            className="
             text-3xl 
             font-black
             text-red-700
-          ">
+          "
+          >
             ΕΓΓΡΑΦΗ 🎲
           </CardTitle>
 
           <CardDescription className="text-gray-600">
-            Φτιάξε λογαριασμό και μπες στα στοιχήματα
+            Φτιάξε λογαριασμό, και μετά κάνε ΣΥΝΔΕΣΗ
           </CardDescription>
 
           <p className="text-sm mt-3">
             Έχεις ήδη λογαριασμό;{" "}
-            <Link 
+            <Link
               to="/signin"
               className="
                 font-bold 
@@ -74,69 +76,45 @@ export default function Signup() {
               Σύνδεση
             </Link>
           </p>
-
         </CardHeader>
 
-
         <CardContent>
-
           <Formik<RegValues>
-
             initialValues={{
               name: "",
-              password: ""
+              password: "",
             }}
-
-            onSubmit={async (values, {setSubmitting}) => {
-
+            onSubmit={async (values, { setSubmitting }) => {
               setError("");
 
               try {
+                const res = await fetch(`${API_URL}/api/auth/register`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(values),
+                });
 
-                const res = await fetch(
-                  `${API_URL}/api/auth/register`,
-                  {
-                    method:"POST",
-                    headers:{
-                      "Content-Type":"application/json",
-                    },
-                    body:JSON.stringify(values),
-                  }
-                );
-
-
-                if(!res.ok){
+                if (!res.ok) {
                   setError("Το όνομα χρήστη υπάρχει ήδη");
                   return;
                 }
 
-
                 navigate("/signin");
-
-
-              } catch(err){
-
+              } catch (err) {
                 setError("Κάτι πήγε στραβά");
-
               } finally {
-
                 setSubmitting(false);
-
               }
-
             }}
-
           >
-
-          {({isSubmitting}) => (
-
-            <Form className="flex flex-col gap-5">
-
-
-              <Field
-                name="name"
-                placeholder="Ονοματεπώνυμο"
-                className="
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-5">
+                <Field
+                  name="name"
+                  placeholder="Ονοματεπώνυμο"
+                  className="
                   rounded-xl
                   border
                   border-gray-300
@@ -147,14 +125,13 @@ export default function Signup() {
                   focus:ring-2
                   focus:ring-red-200
                 "
-              />
+                />
 
-
-              <Field
-                name="password"
-                type="password"
-                placeholder="Κωδικός (μόνο ΑΡΙΘΜΟΙ)"
-                className="
+                <Field
+                  name="password"
+                  type="password"
+                  placeholder="Κωδικός (μόνο ΑΡΙΘΜΟΙ)"
+                  className="
                   rounded-xl
                   border
                   border-gray-300
@@ -165,24 +142,24 @@ export default function Signup() {
                   focus:ring-2
                   focus:ring-red-200
                 "
-              />
+                />
 
-
-              {error && (
-                <p className="
+                {error && (
+                  <p
+                    className="
                   text-red-600
                   text-center
                   font-bold
-                ">
-                  {error}
-                </p>
-              )}
+                "
+                  >
+                    {error}
+                  </p>
+                )}
 
-
-              <button
-                disabled={isSubmitting}
-                type="submit"
-                className="
+                <button
+                  disabled={isSubmitting}
+                  type="submit"
+                  className="
                   mt-3
                   rounded-full
                   border-2
@@ -203,21 +180,14 @@ export default function Signup() {
                   active:translate-y-1
                   active:shadow-[0_3px_0_#7f1d1d]
                 "
-              >
-                {isSubmitting ? "Φόρτωση..." : "Εγγραφή 🎰"}
-              </button>
-
-
-            </Form>
-
-          )}
-
+                >
+                  {isSubmitting ? "Φόρτωση..." : "Εγγραφή 🎰"}
+                </button>
+              </Form>
+            )}
           </Formik>
-
         </CardContent>
-
       </Card>
-
     </div>
   );
 }
