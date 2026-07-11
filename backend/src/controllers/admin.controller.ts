@@ -32,6 +32,7 @@ export async function getAllAnswers(req: Request, res: Response) {
   }
 }
 
+
 // CREATE NEW BET
 export async function createBet(req: Request, res: Response) {
   try {
@@ -51,6 +52,7 @@ export async function createBet(req: Request, res: Response) {
       message: "Bet created successfully",
       bet,
     });
+
   } catch (error) {
     console.error(error);
 
@@ -60,14 +62,24 @@ export async function createBet(req: Request, res: Response) {
   }
 }
 
-// CHECK ANSWER AND UPDATE SCORE
+
+// UPDATE USER SCORE BASED ON ADMIN INPUT
 export async function updateAnswer(req: Request, res: Response) {
   try {
     const { userId, betId } = req.params;
 
-    const { value } = req.body;
+    const { score } = req.body;
+
+
+    if (score === undefined || isNaN(Number(score))) {
+      return res.status(400).json({
+        message: "Valid score is required",
+      });
+    }
+
 
     const user = await UserModel.findById(userId);
+
 
     if (!user) {
       return res.status(404).json({
@@ -75,9 +87,11 @@ export async function updateAnswer(req: Request, res: Response) {
       });
     }
 
+
     const userAnswer = user.answers.find(
       (answer) => answer.bet.toString() === betId
     );
+
 
     if (!userAnswer) {
       return res.status(404).json({
@@ -85,32 +99,39 @@ export async function updateAnswer(req: Request, res: Response) {
       });
     }
 
-    // If answer is correct increase score
-    if (userAnswer.answer.toLowerCase() === value.toLowerCase()) {
-      user.score += 1;
-    }
+
+    // Add admin given points
+    user.score += Number(score);
+
 
     await user.save();
 
+
     res.status(200).json({
-      message: "Answer checked",
-      score: user.score,
+      message: "Score updated successfully",
+      addedPoints: Number(score),
+      totalScore: user.score,
     });
+
+
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to check answer",
+      message: "Failed to update score",
     });
   }
 }
+
 
 // DELETE ANSWER FROM USER ANSWERS ARRAY
 export async function deleteAnswer(req: Request, res: Response) {
   try {
     const { userId, betId } = req.params;
 
+
     const user = await UserModel.findById(userId);
+
 
     if (!user) {
       return res.status(404).json({
@@ -118,15 +139,20 @@ export async function deleteAnswer(req: Request, res: Response) {
       });
     }
 
+
     user.answers = user.answers.filter(
       (answer) => answer.bet.toString() !== betId
     );
 
+
     await user.save();
+
 
     res.status(200).json({
       message: "Answer deleted",
     });
+
+
   } catch (error) {
     console.error(error);
 
