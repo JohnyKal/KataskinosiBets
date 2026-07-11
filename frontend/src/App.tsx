@@ -21,6 +21,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../@/components/ui/sheet";
+import Leaderboard from "./Leaderboard.tsx";
 
 export default function App() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -116,6 +117,7 @@ export default function App() {
           <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
           <Route path="/register" element={<Signup checkAuth={checkAuth}/>} />
           <Route path="/live_stoixima" element={<Home/>} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Routes>
       </BrowserRouter>
     </div>

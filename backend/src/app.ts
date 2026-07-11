@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import answerRoutes from "./routes/answers.routes.js";
 import express, { type Application } from "express";
+import usersRoutes from "./routes/users.routes.js";
 import type {
     Request,
     Response,
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 // THIS LINE WIRES THE ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/ans", answerRoutes);
+app.use("/api/leaderboard", usersRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
