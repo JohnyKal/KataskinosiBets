@@ -253,7 +253,7 @@ export default function App() {
 
           <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
 
-          <Route path="/register" element={<Signup checkAuth={checkAuth} />} />
+          <Route path="/register" element={<Signup />} />
 
           <Route path="/" element={<Home />} />
 
