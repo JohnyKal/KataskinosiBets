@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
+  CardTitle,
 } from "../@/components/ui/card";
 
 type Answer = {
@@ -31,31 +31,38 @@ export default function BetCard({
   const [text, setText] = useState("");
   const [answers, setAnswers] = useState<Answer[]>([]);
 
+
   const fetchAnswers = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/answers/find`, {
-        method: "POST",
+      const res = await fetch(`${API_URL}/api/ans/answer/${bet._id}`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          betId: bet._id,
-        }),
+        
       });
 
       if (!res.ok) return;
 
       const data = await res.json();
       setAnswers(data);
+
     } catch (err) {
       console.error(err);
     }
   };
 
+
   const submitAnswer = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/ans/answer`, {
+  
+      console.log({
+        betId: bet._id,
+        answer: text,
+      });
+  
+      const res = await fetch(`${API_URL}/api/ans/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,52 +73,190 @@ export default function BetCard({
           answer: text,
         }),
       });
+  
+  
+      const data = await res.json();
+  
+      console.log("SERVER RESPONSE:", data);
+  
+  
+
 
       if (!res.ok) return;
 
       setText("");
       refreshBets();
       fetchAnswers();
-    } catch (err) {
+
+    } catch(err) {
       console.error(err);
     }
   };
 
+
   useEffect(() => {
     fetchAnswers();
-  }, []);
+  },[bet._id]);
+
 
   return (
-    <Card className="m-[8vw] bg-white ">
-      <CardHeader>
-        <CardDescription>{bet.question}</CardDescription>
+    <Card
+      className="
+      w-full max-w-xl
+      bg-emerald-950/70
+      backdrop-blur-xl
+      border border-emerald-700/40
+      shadow-[0_20px_50px_rgba(0,0,0,0.35)]
+      rounded-3xl
+      overflow-hidden
+      "
+    >
 
-        <CardAction>
+      <CardHeader className="space-y-4">
+
+
+        <CardTitle
+          className="
+          text-center
+          text-xl
+          font-black
+          text-yellow-400
+          tracking-wide
+          "
+        >
+          🎰 LIVE ΣΤΟΙΧΗΜΑ
+        </CardTitle>
+
+
+        <CardDescription
+          className="
+          text-center
+          text-white
+          text-lg
+          font-bold
+          "
+        >
+          {bet.question}
+        </CardDescription>
+
+
+        <div className="flex gap-3 mt-4">
+
+
           <input
             type="text"
-            placeholder="απλή ΚΑΤΑΝΟΗΤΗ απάντηση"
+            placeholder="Γράψε την πρόβλεψη..."
             value={text}
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e)=>setText(e.target.value)}
+            className="
+            flex-1
+            rounded-full
+            px-5
+            py-3
+            bg-black/30
+            border
+            border-yellow-400/40
+            text-white
+            placeholder:text-white/50
+            outline-none
+            focus:ring-2
+            focus:ring-yellow-400
+            "
           />
 
+
           <button
-            className="px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
             onClick={submitAnswer}
+            className="
+            rounded-full
+            px-6
+            py-3
+            font-black
+            uppercase
+            text-white
+            bg-gradient-to-b
+            from-red-500
+            to-red-800
+            border-2
+            border-yellow-300
+            shadow-[0_5px_0_#7f1d1d]
+            hover:translate-y-1
+            transition
+            "
           >
             Δήλωσε
           </button>
-        </CardAction>
+
+
+        </div>
+
       </CardHeader>
 
+
       <CardContent>
-        <ul>
-          {answers.map((user) => (
-            <li key={user.name}>
-              <strong>{user.name}</strong>: {user.answer}
-            </li>
+
+
+        <div className="space-y-2">
+
+
+          {answers.length === 0 && (
+            <p className="
+            text-center
+            text-white/50
+            italic
+            ">
+              Κανείς δεν έχει παίξει ακόμα 🎲
+            </p>
+          )}
+
+
+
+          {answers.map((user)=>(
+            <div
+              key={user.name}
+              className="
+              flex
+              justify-between
+              items-center
+              bg-black/30
+              rounded-xl
+              px-4
+              py-3
+              border
+              border-white/10
+              "
+            >
+
+              <span
+                className="
+                text-yellow-300
+                font-bold
+                "
+              >
+                {user.name}
+              </span>
+
+
+              <span
+                className="
+                text-white
+                font-semibold
+                "
+              >
+                {user.answer}
+              </span>
+
+
+            </div>
           ))}
-        </ul>
+
+
+        </div>
+
+
       </CardContent>
+
+
     </Card>
   );
 }

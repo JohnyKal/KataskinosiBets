@@ -8,154 +8,198 @@ interface Bet {
 }
 
 export default function Bets() {
+
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [bets, setBets] = useState<Bet[]>([]);
 
+
   const fetchBets = async () => {
     try {
+
       const res = await fetch(`${API_URL}/api/ans/bets`, {
         credentials: "include",
       });
+
 
       if (!res.ok) {
         setBets([]);
         return;
       }
 
+
       const data = await res.json();
       setBets(data);
 
-    } catch (err) {
+
+    } catch(err) {
       console.error(err);
     }
   };
+
 
   useEffect(() => {
     fetchBets();
   }, []);
 
+
+
   return (
-    <div className="min-h-screen px-6 py-8">
 
-      <div className="max-w-5xl mx-auto">
+    <div className="
+      min-h-screen
+      px-4
+      py-8
+    ">
 
-        {/* Title */}
-        <div className="text-center mb-5">
+
+      <div className="
+        max-w-6xl
+        mx-auto
+      ">
+
+
+
+        {/* TITLE */}
+
+        <div className="text-center mb-4">
+
           <h1
             className="
-              text-3xl md:text-5xl
-              font-extrabold
-              text-yellow-400
-              tracking-wide
-              drop-shadow-[0_3px_8px_rgba(0,0,0,0.8)]
+            text-3xl
+            md:text-5xl
+            font-black
+            text-yellow-400
+            tracking-wide
+            drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]
             "
           >
             🎰 Κατασκηνωτικά Στοιχήματα 🎲
           </h1>
+
         </div>
 
 
-        {/* Gentle Home Button */}
-        <div className="flex justify-center mb-10">
+
+
+        {/* HOME BUTTON */}
+
+        <div className="
+          flex
+          justify-center
+          mb-8
+        ">
+
           <button
             onClick={() => navigate("/")}
             className="
-              px-5 py-2
-              rounded-full
+            rounded-full
+            px-5
+            py-2
 
-              bg-black/30
-              backdrop-blur-sm
+            bg-black/30
+            backdrop-blur-md
 
-              border
-              border-yellow-500/30
+            border
+            border-yellow-400/40
 
-              text-yellow-200
-              font-medium
+            text-yellow-200
+            font-bold
 
-              shadow-lg
+            shadow-lg
 
-              hover:bg-black/40
-              hover:border-yellow-400/60
+            hover:bg-black/50
+            hover:border-yellow-400
 
-              transition-all
-              duration-300
+            transition
             "
           >
+
             🏠 Επιστροφή στην αρχική
+
           </button>
+
+
         </div>
 
 
-        {/* Bets */}
-        <div
-          className="
-            grid
-            gap-6
-            md:grid-cols-2
-          "
-        >
 
-          {bets.length > 0 ? (
-            bets.map((bet) => (
-              <div
-                key={bet._id}
-                className="
-                  bg-black/30
-                  backdrop-blur-sm
-                  rounded-xl
-                  p-4
 
-                  border
-                  border-yellow-500/20
 
-                  shadow-xl
+        {/* BET CARDS */}
 
-                  hover:border-yellow-400/40
-                  transition
-                "
-              >
-                <BetCard
-                  bet={bet}
-                  API_URL={API_URL}
-                  refreshBets={fetchBets}
-                />
-              </div>
-            ))
-          ) : (
+        {
+          bets.length > 0 ? (
 
             <div
               className="
-                col-span-full
-                text-center
-
-                bg-black/30
-                backdrop-blur-sm
-
-                border
-                border-yellow-500/30
-
-                rounded-xl
-
-                p-10
-
-                text-white
-
-                shadow-xl
+              flex
+              flex-col
+              items-center
+              gap-8
               "
             >
-              <p className="text-xl">
-                🎲 Δεν υπάρχουν διαθέσιμα στοιχήματα ακόμα
-              </p>
+
+              {
+                bets.map((bet)=>(
+                  
+                  <BetCard
+                    key={bet._id}
+                    bet={bet}
+                    API_URL={API_URL}
+                    refreshBets={fetchBets}
+                  />
+
+                ))
+              }
+
             </div>
 
-          )}
 
-        </div>
+          ) : (
+
+
+            <div
+              className="
+              max-w-xl
+              mx-auto
+
+              bg-black/30
+              backdrop-blur-md
+
+              border
+              border-yellow-400/30
+
+              rounded-3xl
+
+              p-10
+
+              text-center
+
+              text-white
+
+              shadow-xl
+              "
+            >
+
+              <p className="text-xl font-bold">
+                🎲 Δεν υπάρχουν διαθέσιμα στοιχήματα ακόμα
+              </p>
+
+
+            </div>
+
+
+          )
+        }
+
+
 
       </div>
 
+
     </div>
+
   );
 }

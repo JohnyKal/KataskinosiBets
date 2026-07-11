@@ -233,7 +233,7 @@ export default function App() {
                   </h2>
 
                   <p className="mt-2 text-sm text-green-200">
-                    Ξυπνάμε τους servers από το darkweb...
+                    Ξυπνάμε τους servers από το <strong>darkweb</strong>...
                   </p>
 
                   {/* Loading dots */}
