@@ -75,7 +75,7 @@ export default function Bets() {
             drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]
             "
           >
-            🎰 Κατασκηνωτικά Στοιχήματα 🎲
+            🎰 Στοιχήματα 🎲
           </h1>
 
         </div>

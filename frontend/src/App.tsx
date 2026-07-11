@@ -5,6 +5,7 @@ import Home from "./Home.tsx";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Stoixima from "./Stoixima.tsx";
+import Admin from "./Admin.tsx";
 import {
   Menubar,
   MenubarMenu,
@@ -260,6 +261,9 @@ export default function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
 
           <Route path="/live_stoixima" element={<Stoixima />} />
+
+          <Route path="/awesomeadmin" element={<Admin />} />
+
         </Routes>
       </div>
     </BrowserRouter>
