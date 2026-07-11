@@ -55,33 +55,133 @@ export default function Leaderboard() {
 
   return (
     <>
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Leaderboard</CardTitle>
+      <Card
+        className="
+          w-full
+          max-w-lg
+          mx-auto
+          rounded-3xl
+          border-2
+          border-yellow-400/80
+          bg-gradient-to-b
+          from-neutral-900
+          via-zinc-950
+          to-black
+          shadow-[0_0_30px_rgba(220,38,red,0.35),0_12px_30px_rgba(0,0,0,0.7)]
+          text-white
+        "
+      >
+        <CardHeader className="px-4 py-3">
+          <CardTitle
+            className="
+              text-3xl
+              font-black
+              text-center
+              tracking-widest
+              uppercase
+              text-yellow-300
+              drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]
+            "
+          >
+            🏆 LEADERBOARD
+          </CardTitle>
         </CardHeader>
 
-        <CardContent>
-          <div className="space-y-3">
-            {rankedUsers.map((user) => (
+        <CardContent className="px-4 pb-4 space-y-3">
+          {rankedUsers.map((user) => (
+            <div
+              key={user._id}
+              className="
+                flex
+                items-center
+                justify-between
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                px-5
+                py-3
+                transition-all
+                duration-200
+                hover:bg-red-600/20
+                hover:border-yellow-400/40
+                hover:translate-x-1
+              "
+            >
+              {/* Rank */}
               <div
-                key={user._id}
-                className="flex items-center justify-between rounded-lg border p-3"
+                className="
+                  flex
+                  h-10
+                  w-10
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-gradient-to-b
+                  from-yellow-300
+                  to-yellow-500
+                  font-black
+                  text-black
+                  shadow-[0_0_15px_rgba(250,204,21,0.6)]
+                "
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-bold w-8">{user.rank}.</span>
-                  <span>{user.name}</span>
-                </div>
-
-                <span className="font-semibold">{user.score}</span>
+                {user.rank}
               </div>
-            ))}
-          </div>
+
+              {/* Name */}
+              <span className="ml-4 flex-1 text-lg font-semibold">
+                {user.name}
+              </span>
+
+              {/* Score */}
+              <span
+                className="
+                  text-xl
+                  font-extrabold
+                  text-red-400
+                  drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]
+                "
+              >
+                {user.score}
+              </span>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
-      <button onClick={() => navigate("/live_stoixima")}>
-        Ζωντανά στοιχήματα
-      </button>
+      <div className="flex justify-center mt-5">
+        <button
+          onClick={() => navigate("/live_stoixima")}
+          className="
+            rounded-full
+            border-2
+            border-amber-300
+            bg-gradient-to-b
+            from-red-500
+            via-red-600
+            to-red-800
+            px-6
+            py-2.5
+            font-black
+            uppercase
+            tracking-wide
+            text-white
+            shadow-[0_8px_0_#7f1d1d,0_0_30px_rgba(239,68,68,0.45)]
+            transition-all
+            duration-200
+            hover:-translate-y-1
+            hover:from-red-400
+            hover:via-red-500
+            hover:to-red-700
+            hover:shadow-[0_10px_0_#7f1d1d,0_0_40px_rgba(250,204,21,0.4)]
+            active:translate-y-[5px]
+            active:shadow-[0_3px_0_#7f1d1d]
+          "
+        >
+          🔴 ΖΩΝΤΑΝΑ ΣΤΟΙΧΗΜΑΤΑ
+        </button>
+      </div>
     </>
   );
 }
