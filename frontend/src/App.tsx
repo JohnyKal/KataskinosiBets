@@ -208,20 +208,43 @@ export default function App() {
         {/* ROUTES */}
 
         <Routes>
-          <Route
-            path="/"
-            element={
-              loading ? (
-                <div className="text-white text-center mt-10">
-                  Περίμενε να φορτώσει η ιστοσελίδα...
-                </div>
-              ) : user ? (
-                <Home />
-              ) : (
-                <Navigate to="/register" />
-              )
-            }
-          />
+        <Route
+  path="/"
+  element={
+    loading ? (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#063d2a] text-white">
+        {/* Casino loading chip */}
+        <div className="relative mb-6">
+          <div className="w-20 h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center animate-spin">
+            <span className="text-3xl">🎰</span>
+          </div>
+
+          <div className="absolute inset-0 rounded-full shadow-[0_0_30px_#facc15]"></div>
+        </div>
+
+        {/* Text */}
+        <h2 className="text-xl md:text-2xl font-bold text-yellow-400 animate-pulse">
+          Περίμενε μια ολιά να φορτώσει η ιστοσελίδα
+        </h2>
+
+        <p className="mt-2 text-sm text-green-200">
+          Ξυπνάμε τους servers από το darkweb...
+        </p>
+
+        {/* Loading dots */}
+        <div className="flex gap-2 mt-5">
+          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></span>
+          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
+          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+        </div>
+      </div>
+    ) : user ? (
+      <Home />
+    ) : (
+      <Navigate to="/register" />
+    )
+  }
+/>
 
           <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
 
