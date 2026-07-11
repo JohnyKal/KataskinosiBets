@@ -60,7 +60,7 @@ export default function Signup() {
           </CardTitle>
 
           <CardDescription className="text-gray-600">
-            Φτιάξε λογαριασμό, και μετά κάνε ΣΥΝΔΕΣΗ
+            Φτιάξε λογαριασμό, και μετά κάνε <strong>ΣΥΝΔΕΣΗ</strong>
           </CardDescription>
 
           <p className="text-sm mt-3">
