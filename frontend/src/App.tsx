@@ -4,7 +4,7 @@ import Signup from "./Register.tsx";
 import Home from "./Home.tsx";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-
+import Stoixima from "./Stoixima.tsx";
 import {
   Menubar,
   MenubarMenu,
@@ -103,7 +103,7 @@ export default function App() {
                 <MenubarGroup>
                   <Link to="/">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
-                      🏠 Στοιχήματα
+                      🏠 Αρχική
                     </MenubarItem>
                   </Link>
 
@@ -112,10 +112,15 @@ export default function App() {
                       💎 Leaderboard
                     </MenubarItem>
                   </Link>
+                  <Link to="/live_stoixima">
+                    <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
+                    🎰 Στοίχημα
+                    </MenubarItem>
+                  </Link>
 
                   <Link to="/signin">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
-                      🎰 Σύνδεση
+                    ✨ Σύνδεση
                     </MenubarItem>
                   </Link>
 
@@ -208,51 +213,53 @@ export default function App() {
         {/* ROUTES */}
 
         <Routes>
-        <Route
-  path="/"
-  element={
-    loading ? (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#063d2a] text-white">
-        {/* Casino loading chip */}
-        <div className="relative mb-6">
-          <div className="w-20 h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center animate-spin">
-            <span className="text-3xl">🎰</span>
-          </div>
+          <Route
+            path="/"
+            element={
+              loading ? (
+                <div className="min-h-screen flex flex-col items-center justify-center bg-[#063d2a] text-white">
+                  {/* Casino loading chip */}
+                  <div className="relative mb-6">
+                    <div className="w-20 h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center animate-spin">
+                      <span className="text-3xl">🎰</span>
+                    </div>
 
-          <div className="absolute inset-0 rounded-full shadow-[0_0_30px_#facc15]"></div>
-        </div>
+                    <div className="absolute inset-0 rounded-full shadow-[0_0_30px_#facc15]"></div>
+                  </div>
 
-        {/* Text */}
-        <h2 className="text-xl md:text-2xl font-bold text-yellow-400 animate-pulse">
-          Περίμενε μια ολιά να φορτώσει η ιστοσελίδα
-        </h2>
+                  {/* Text */}
+                  <h2 className="text-xl md:text-2xl font-bold text-yellow-400 animate-pulse">
+                    Περίμενε μια ολιά να φορτώσει η ιστοσελίδα
+                  </h2>
 
-        <p className="mt-2 text-sm text-green-200">
-          Ξυπνάμε τους servers από το darkweb...
-        </p>
+                  <p className="mt-2 text-sm text-green-200">
+                    Ξυπνάμε τους servers από το darkweb...
+                  </p>
 
-        {/* Loading dots */}
-        <div className="flex gap-2 mt-5">
-          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></span>
-          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-          <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-        </div>
-      </div>
-    ) : user ? (
-      <Home />
-    ) : (
-      <Navigate to="/register" />
-    )
-  }
-/>
+                  {/* Loading dots */}
+                  <div className="flex gap-2 mt-5">
+                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></span>
+                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
+                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
+                  </div>
+                </div>
+              ) : user ? (
+                <Home />
+              ) : (
+                <Navigate to="/register" />
+              )
+            }
+          />
 
           <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
 
           <Route path="/register" element={<Signup checkAuth={checkAuth} />} />
 
-          <Route path="/live_stoixima" element={<Home />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="/leaderboard" element={<Leaderboard />} />
+
+          <Route path="/live_stoixima" element={<Stoixima />} />
         </Routes>
       </div>
     </BrowserRouter>
