@@ -1,40 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-interface Bet {
-  _id: string;
-  question: string;
-  // add any other fields your API returns
-}
+
 
 export default function Home() {
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  const [bets, setBets] = useState<Bet[]>([]);
-
-  const fetchBets = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/ans/bets`, {
-        // api/bets doesnt exist
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        setBets([]);
-        return;
-      }
-
-      const data = await res.json();
-      setBets(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchBets();
-  }, []);
 
   return (
     <div className="h-screen">
