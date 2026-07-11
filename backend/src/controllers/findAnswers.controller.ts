@@ -2,15 +2,16 @@ import type { Request, Response } from "express";
 import mongoose from "mongoose";
 import { UserModel } from "../models/User.model.js";
 
-export const findAnswers = async (req: Request<{ bet_id: string }>, res: Response) => {
+export const findAnswers = async (req: Request<{ betId: string }>, res: Response) => {
   try {
-    const { bet_id } = req.params ;
+    console.log(req.params);
+    const { betId } = req.params ;
 
-    if (!mongoose.Types.ObjectId.isValid(bet_id)) {
+    if (!mongoose.Types.ObjectId.isValid(betId)) {
       return res.status(400).json({ message: "Invalid bet id" });
     }
 
-    const objectId = new mongoose.Types.ObjectId(bet_id);
+    const objectId = new mongoose.Types.ObjectId(betId);
 
     const users = await UserModel.aggregate([
       {
