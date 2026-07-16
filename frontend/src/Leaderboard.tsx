@@ -17,7 +17,7 @@ interface User {
 export default function Leaderboard() {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     const fetchLeaderboard = async () => {

@@ -11,7 +11,7 @@ export default function Bets() {
 
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const [bets, setBets] = useState<Bet[]>([]);
 
 

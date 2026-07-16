@@ -36,7 +36,7 @@ export default function App() {
   const checkAuth = async () => {
     try {
       console.log("checkAuth started");
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       console.log("Token inside checkAuth:", token);
       const res = await fetch(`${API_URL}/api/auth/me`, {
         headers: {

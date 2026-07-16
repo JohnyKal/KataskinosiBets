@@ -23,7 +23,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
 
   const [newBet, setNewBet] = useState("");
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const [scores, setScores] = useState<{
     [key: string]: string;
   }>({});

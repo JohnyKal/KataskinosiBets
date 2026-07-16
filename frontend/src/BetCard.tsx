@@ -30,7 +30,7 @@ export default function BetCard({
 }: Props) {
   const [text, setText] = useState("");
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   const fetchAnswers = async () => {
     try {
