@@ -124,7 +124,8 @@ export default function Login({ checkAuth }: LoginProps) {
                 await checkAuth();
 
                 navigate("/");
-              } catch {
+              } catch(err) {
+                console.error("Login error:", err);
                 setError("Δεν ήταν δυνατή η σύνδεση");
               } finally {
                 setSubmitting(false);
