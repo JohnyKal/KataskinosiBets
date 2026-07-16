@@ -109,6 +109,7 @@ export default function Login({ checkAuth }: LoginProps) {
                 const data = await res.json();
 
                 console.log("Login response:", data);
+                console.log("AAAAAA");
 
                 if (!data.token) {
                   console.error("No token received!");
