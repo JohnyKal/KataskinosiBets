@@ -26,7 +26,6 @@ export default function Login({ checkAuth }: LoginProps) {
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4">
-
       <h1
         className="
           text-white
@@ -41,7 +40,6 @@ export default function Login({ checkAuth }: LoginProps) {
         Συνδέσου και παίξε! 🍀
       </h1>
 
-
       <Card
         className="
           w-full
@@ -55,9 +53,7 @@ export default function Login({ checkAuth }: LoginProps) {
           shadow-[0_0_40px_rgba(255,215,0,0.35)]
         "
       >
-
         <CardHeader className="text-center">
-
           <CardTitle
             className="
               text-3xl
@@ -85,36 +81,25 @@ export default function Login({ checkAuth }: LoginProps) {
               Εγγραφή
             </Link>
           </p>
-
         </CardHeader>
 
-
         <CardContent>
-
           <Formik<LogValues>
-
             initialValues={{
               name: "",
               password: "",
             }}
-
             onSubmit={async (values, { setSubmitting }) => {
-
               setError("");
 
               try {
-
-                const res = await fetch(
-                  `${API_URL}/api/auth/login`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      
-                    },
-                    body: JSON.stringify(values),
-                  }
-                );
+                const res = await fetch(`${API_URL}/api/auth/login`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(values),
+                });
 
                 if (!res.ok) {
                   setError("Λάθος όνομα ή κωδικός");
@@ -123,29 +108,29 @@ export default function Login({ checkAuth }: LoginProps) {
 
                 const data = await res.json();
 
+                console.log("Login response:", data);
+
+                if (!data.token) {
+                  console.error("No token received!");
+                  return;
+                }
+
                 localStorage.setItem("token", data.token);
 
+                console.log("Stored token:", localStorage.getItem("token"));
+
                 await checkAuth();
+
                 navigate("/");
-
               } catch {
-
                 setError("Δεν ήταν δυνατή η σύνδεση");
-
               } finally {
-
                 setSubmitting(false);
-
               }
-
             }}
-
           >
-
             {({ isSubmitting }) => (
-
               <Form className="flex flex-col gap-5">
-
                 <Field
                   name="name"
                   type="text"
@@ -162,7 +147,6 @@ export default function Login({ checkAuth }: LoginProps) {
                     focus:ring-red-200
                   "
                 />
-
 
                 <Field
                   name="password"
@@ -181,7 +165,6 @@ export default function Login({ checkAuth }: LoginProps) {
                   "
                 />
 
-
                 {error && (
                   <p
                     className="
@@ -193,7 +176,6 @@ export default function Login({ checkAuth }: LoginProps) {
                     {error}
                   </p>
                 )}
-
 
                 <button
                   type="submit"
@@ -223,17 +205,11 @@ export default function Login({ checkAuth }: LoginProps) {
                 >
                   {isSubmitting ? "Σύνδεση..." : "Σύνδεση 🎲"}
                 </button>
-
               </Form>
-
             )}
-
           </Formik>
-
         </CardContent>
-
       </Card>
-
     </div>
   );
 }
