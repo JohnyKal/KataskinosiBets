@@ -33,10 +33,11 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+
   const checkAuth = async () => {
     try {
+     
       const token = localStorage.getItem("token");
-      
       const res = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,

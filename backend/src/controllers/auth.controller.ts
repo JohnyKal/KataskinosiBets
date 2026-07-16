@@ -5,7 +5,7 @@ import { signToken } from "../utils/jwt.js";
 export async function register(req: Request, res: Response) {
   try {
     // validate input
-    const data = req.body ;
+    const data = req.body;
     const exists = await UserModel.findOne({ name: data.name });
     if (exists) {
       return res.status(400).json({ error: "Email already in use" });
@@ -22,9 +22,16 @@ export async function register(req: Request, res: Response) {
     //generate JWT token
     const token = signToken(user._id.toString());
 
-//check here if it need any more work with JWT token, like sending it back to the client or storing it in a cookie
+    //check here if it need any more work with JWT token, like sending it back to the client or storing it in a cookie
 
-    return res.status(201).json({ message: "User registered" });
+    return res.status(201).json({
+      message: "User registered",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+      },
+    });
   } catch (err: any) {
     return res.status(400).json({ error: err.message });
   }
@@ -32,18 +39,17 @@ export async function register(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   const data = req.body;
-  const user = await UserModel.findOne({ name: data.name }).select(
-    "+password"
-  );
 
-  //find user by email
+  //find user by name
+  const user = await UserModel.findOne({ name: data.name }).select("+password");
+
   if (!user) {
     console.log("User not found");
     return res.status(400).json({ error: "Invalid credentials" });
   }
 
   //compare password
-  const isValid =  data.password === user.password;
+  const isValid = data.password === user.password;
   if (!isValid) {
     return res.status(400).json({ error: "Invalid credentials" });
   } else {
