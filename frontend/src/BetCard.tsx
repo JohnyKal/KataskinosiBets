@@ -30,6 +30,7 @@ export default function BetCard({
 }: Props) {
   const [text, setText] = useState("");
   const [answers, setAnswers] = useState<Answer[]>([]);
+  const token = localStorage.getItem("token");
 
   const fetchAnswers = async () => {
     try {
@@ -37,8 +38,9 @@ export default function BetCard({
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
+     
       });
 
       if (!res.ok) return;
@@ -61,8 +63,9 @@ export default function BetCard({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
+     
         body: JSON.stringify({
           betId: bet._id,
           answer: text,

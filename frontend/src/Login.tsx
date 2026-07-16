@@ -110,18 +110,20 @@ export default function Login({ checkAuth }: LoginProps) {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
+                      
                     },
-                    credentials: "include",
                     body: JSON.stringify(values),
                   }
                 );
-
 
                 if (!res.ok) {
                   setError("Λάθος όνομα ή κωδικός");
                   return;
                 }
 
+                const data = await res.json();
+
+                localStorage.setItem("token", data.token);
 
                 await checkAuth();
                 navigate("/");

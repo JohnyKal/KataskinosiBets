@@ -23,7 +23,7 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
 
   const [newBet, setNewBet] = useState("");
-
+  const token = localStorage.getItem("token");
   const [scores, setScores] = useState<{
     [key: string]: string;
   }>({});
@@ -39,9 +39,11 @@ export default function Admin() {
   async function fetchAnswers() {
     try {
       setLoading(true);
-
+      
       const res = await fetch(`${API_URL}/api/admin/answers`, {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
       });
 
       const data = await res.json();
@@ -58,11 +60,12 @@ export default function Admin() {
     if (!newBet.trim()) return;
 
     try {
+   
       await fetch(`${API_URL}/api/admin/bets`, {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           question: newBet,
@@ -81,11 +84,13 @@ export default function Admin() {
     const key = `${userId}-${betId}`;
 
     try {
+      
       await fetch(`${API_URL}/api/admin/answers/${userId}/${betId}`, {
         method: "PATCH",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+           Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({
           score: Number(scores[key]),
@@ -107,7 +112,9 @@ export default function Admin() {
     try {
       await fetch(`${API_URL}/api/admin/answers/${userId}/${betId}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
       });
 
       setAnswers((prev) =>

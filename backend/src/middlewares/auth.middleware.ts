@@ -10,8 +10,18 @@ export default function authMiddleware(
   res: Response,
   next: NextFunction
 ): asserts req is Request & { user: JwtPayload } {
-  const token = req.cookies.token;
 
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader?.startsWith("Bearer ")) {
+    res.status(401).json({
+      message: "Unauthorized",
+  });
+      return ;
+  }
+  
+  const token = authHeader.split(" ")[1];
+  
   if (!token) {
     res.status(401).json({ error: "Not authenticated" });
     return;

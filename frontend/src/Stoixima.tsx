@@ -11,7 +11,7 @@ export default function Bets() {
 
   const navigate = useNavigate();
   const API_URL = import.meta.env.VITE_API_URL;
-
+  const token = localStorage.getItem("token");
   const [bets, setBets] = useState<Bet[]>([]);
 
 
@@ -19,7 +19,9 @@ export default function Bets() {
     try {
 
       const res = await fetch(`${API_URL}/api/ans/bets`, {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
       });
 
 

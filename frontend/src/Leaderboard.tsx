@@ -17,12 +17,16 @@ interface User {
 export default function Leaderboard() {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
         const res = await fetch(`${API_URL}/api/leaderboard`, {
-          credentials: "include",
+          
+          headers: {
+            Authorization: `Bearer ${token}`,
+        },
         });
 
         const data = await res.json();

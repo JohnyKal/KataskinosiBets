@@ -35,8 +35,12 @@ export default function App() {
 
   const checkAuth = async () => {
     try {
+      const token = localStorage.getItem("token");
+      
       const res = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
       });
 
       if (!res.ok) throw new Error();

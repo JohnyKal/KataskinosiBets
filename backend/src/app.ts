@@ -31,7 +31,6 @@ app.use(
   
         return callback(new Error("Blocked by CORS"));
       }, // frontend URL
-    credentials: true, // allow cookies to be sent
   })
 );
 

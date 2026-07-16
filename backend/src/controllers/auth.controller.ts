@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import { UserModel } from "../models/User.model.js";
 import { signToken } from "../utils/jwt.js";
-import { sendToken } from "../utils/sendToken.js";
 
 export async function register(req: Request, res: Response) {
   try {
@@ -22,7 +21,8 @@ export async function register(req: Request, res: Response) {
 
     //generate JWT token
     const token = signToken(user._id.toString());
-    sendToken(res, token); //send token as cookie
+
+//check here if it need any more work with JWT token, like sending it back to the client or storing it in a cookie
 
     return res.status(201).json({ message: "User registered" });
   } catch (err: any) {
@@ -51,13 +51,13 @@ export async function login(req: Request, res: Response) {
 
     //generate JWT token
     const token = signToken(user._id.toString());
-    sendToken(res, token); //send token as cookie
     return res.status(200).json({
       message: "Logged in",
       user: {
         id: user._id,
         name: user.name,
       },
+      token,
     });
   }
 }
