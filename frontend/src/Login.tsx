@@ -117,6 +117,8 @@ export default function Login({ checkAuth }: LoginProps) {
 
                 localStorage.setItem("token", data.token);
 
+                console.log("Immediately after set:", localStorage.getItem("token"));
+
                 console.log("Stored token:", localStorage.getItem("token"));
 
                 await checkAuth();
