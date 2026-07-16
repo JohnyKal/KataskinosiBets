@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../@/components/ui/card";
+import { getToken } from "./utils/authToken.js";
 
 type Answer = {
   name: string;
@@ -30,67 +31,119 @@ export default function BetCard({
 }: Props) {
   const [text, setText] = useState("");
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const token = sessionStorage.getItem("token");
+
 
   const fetchAnswers = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/ans/answer/${bet._id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-     
-      });
+
+      const token = getToken();
+
+      const res = await fetch(
+        `${API_URL}/api/ans/answer/${bet._id}`,
+        {
+          method: "GET",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
 
       if (!res.ok) return;
 
+
       const data = await res.json();
+
       setAnswers(data);
+
+
     } catch (err) {
+
       console.error(err);
+
     }
   };
 
+
+
   const submitAnswer = async () => {
+
     try {
+
+      const token = getToken();
+
+
       console.log({
         betId: bet._id,
         answer: text,
       });
 
-      const res = await fetch(`${API_URL}/api/ans/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-     
-        body: JSON.stringify({
-          betId: bet._id,
-          answer: text,
-        }),
-      });
+
+
+      const res = await fetch(
+        `${API_URL}/api/ans/submit`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+
+
+          body: JSON.stringify({
+            betId: bet._id,
+            answer: text,
+          }),
+        }
+      );
+
+
 
       const data = await res.json();
 
-      console.log("SERVER RESPONSE:", data);
+
+      console.log(
+        "SERVER RESPONSE:",
+        data
+      );
+
+
 
       if (!res.ok) return;
 
+
+
       setText("");
+
       refreshBets();
+
       fetchAnswers();
+
+
+
     } catch (err) {
+
       console.error(err);
+
     }
+
   };
 
+
+
   useEffect(() => {
+
     fetchAnswers();
+
   }, [bet._id]);
 
+
+
   return (
+
     <Card
       className="
         w-full max-w-xl
@@ -102,7 +155,11 @@ export default function BetCard({
         overflow-hidden
       "
     >
+
+
       <CardHeader className="space-y-4">
+
+
         <CardTitle
           className="
             text-center
@@ -112,8 +169,12 @@ export default function BetCard({
             tracking-wide
           "
         >
+
           🎰 LIVE ΣΤΟΙΧΗΜΑ
+
         </CardTitle>
+
+
 
         <CardDescription
           className="
@@ -123,15 +184,22 @@ export default function BetCard({
             font-bold
           "
         >
+
           {bet.question}
+
         </CardDescription>
 
+
+
         <div className="flex items-center justify-between gap-2 mt-4">
+
+
           <input
             type="text"
             placeholder="Γράψε την πρόβλεψη..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+
             className="
               w-[65%] sm:flex-1
               rounded-full
@@ -148,8 +216,11 @@ export default function BetCard({
             "
           />
 
+
+
           <button
             onClick={submitAnswer}
+
             className="
               w-[32%] sm:w-auto
               shrink-0
@@ -171,14 +242,27 @@ export default function BetCard({
               transition
             "
           >
+
             Δήλωσε
+
           </button>
+
+
         </div>
+
+
       </CardHeader>
 
+
+
       <CardContent>
+
+
         <div className="space-y-2">
+
+
           {answers.length === 0 && (
+
             <p
               className="
                 text-center
@@ -186,13 +270,20 @@ export default function BetCard({
                 italic
               "
             >
+
               Κανείς δεν έχει παίξει ακόμα 🎲
+
             </p>
+
           )}
 
+
+
           {answers.map((user) => (
+
             <div
               key={user.name}
+
               className="
                 flex
                 justify-between
@@ -205,14 +296,20 @@ export default function BetCard({
                 border-white/10
               "
             >
+
+
               <span
                 className="
                   text-yellow-300
                   font-bold
                 "
               >
+
                 {user.name}
+
               </span>
+
+
 
               <span
                 className="
@@ -220,12 +317,24 @@ export default function BetCard({
                   font-semibold
                 "
               >
+
                 {user.answer}
+
               </span>
+
+
             </div>
+
           ))}
+
+
         </div>
+
+
       </CardContent>
+
+
     </Card>
+
   );
 }

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Stoixima from "./Stoixima.tsx";
 import Admin from "./Admin.tsx";
+
 import {
   Menubar,
   MenubarMenu,
@@ -27,28 +28,45 @@ import {
 
 import Leaderboard from "./Leaderboard.tsx";
 
+import { getToken } from "./utils/authToken.js";
+
 export default function App() {
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const [user, setUser] = useState<any>(null);
+
   const [loading, setLoading] = useState(true);
 
   const checkAuth = async () => {
     try {
       console.log("checkAuth started");
-      const token = sessionStorage.getItem("token");
+
+      const token = getToken();
+
       console.log("Token inside checkAuth:", token);
+
+      if (!token) {
+        setUser(null);
+
+        return;
+      }
+
       const res = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        throw new Error("Unauthorized");
+      }
 
       const data = await res.json();
+
       setUser(data.user);
-    } catch {
+    } catch (error) {
+      console.error("Auth error:", error);
+
       setUser(null);
     } finally {
       setLoading(false);
@@ -68,8 +86,8 @@ export default function App() {
         "
       >
         {/* TOP BAR */}
+
         <div className="flex justify-between items-center px-6 pt-6">
-          {/* MENU */}
           <Menubar className="border-0 bg-transparent p-0">
             <MenubarMenu>
               <MenubarTrigger
@@ -118,6 +136,7 @@ export default function App() {
                       💎 Leaderboard
                     </MenubarItem>
                   </Link>
+
                   <Link to="/live_stoixima">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
                       🎰 Στοίχημα
@@ -139,8 +158,6 @@ export default function App() {
               </MenubarContent>
             </MenubarMenu>
           </Menubar>
-
-          {/* INSTRUCTIONS */}
 
           <Sheet>
             <SheetTrigger
@@ -166,13 +183,7 @@ export default function App() {
               "
             >
               <SheetHeader>
-                <SheetTitle
-                  className="
-                    text-yellow-400
-                    text-2xl
-                    font-bold
-                  "
-                >
+                <SheetTitle className="text-yellow-400 text-2xl font-bold">
                   🎰 Οδηγίες χρήσης
                 </SheetTitle>
 
@@ -184,24 +195,10 @@ export default function App() {
               <div className="mt-8 space-y-5">
                 <div className="rounded-xl bg-black/20 p-4 border border-yellow-500/20">
                   📝 Βάλε στο κουτάκι κοντά σε κάθε ερώτηση την απάντησή σου.
-                  <p className="mt-2 text-yellow-300">
-                    Η απάντησή μπορεί να είναι όνομα, σκηνή ή οτιδήποτε μου
-                    καπνίσει!
-                  </p>
                 </div>
 
                 <div className="rounded-xl bg-green-950/50 p-4 border border-green-600">
-                  ⚡ Η ιστοσελίδα είναι
-                  <span className="text-yellow-400 font-bold">
-                    {" "}
-                    ΑΠΛΗ και ΕΥΚΟΛΗ
-                  </span>
-                  &nbsp;στη χρήση.
-                </div>
-
-                <div className="rounded-xl bg-red-950/30 p-4 border border-red-500/30">
-                  📞 Για πρόβλημα-απορία, πάρε με απόκρυψη ή στείλε σήματα
-                  καπνού ή σύνταξε ένα email.
+                  ⚡ Η ιστοσελίδα είναι ΑΠΛΗ και ΕΥΚΟΛΗ
                 </div>
               </div>
 
@@ -214,40 +211,13 @@ export default function App() {
           </Sheet>
         </div>
 
-        {/* TITLE */}
-
-        {/* ROUTES */}
-
         <Routes>
           <Route
             path="/"
             element={
               loading ? (
-                <div className="min-h-screen flex flex-col items-center justify-center bg-[#063d2a] text-white">
-                  {/* Casino loading chip */}
-                  <div className="relative mb-6">
-                    <div className="w-20 h-20 rounded-full border-4 border-yellow-400 flex items-center justify-center animate-spin">
-                      <span className="text-3xl">🎰</span>
-                    </div>
-
-                    <div className="absolute inset-0 rounded-full shadow-[0_0_30px_#facc15]"></div>
-                  </div>
-
-                  {/* Text */}
-                  <h2 className="text-xl md:text-2xl font-bold text-yellow-400 animate-pulse">
-                    Περίμενε μια ολιά να φορτώσει η ιστοσελίδα
-                  </h2>
-
-                  <p className="mt-2 text-sm text-green-200">
-                    Ξυπνάμε τους servers από το <strong>darkweb</strong>...
-                  </p>
-
-                  {/* Loading dots */}
-                  <div className="flex gap-2 mt-5">
-                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce"></span>
-                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:150ms]"></span>
-                    <span className="w-3 h-3 bg-yellow-400 rounded-full animate-bounce [animation-delay:300ms]"></span>
-                  </div>
+                <div className="min-h-screen flex items-center justify-center text-white">
+                  Φόρτωση...
                 </div>
               ) : user ? (
                 <Home />
@@ -257,11 +227,9 @@ export default function App() {
             }
           />
 
-          <Route path="/signin" element={<Login checkAuth={checkAuth} />} />
+          <Route path="/signin" element={<Login loginSuccess={checkAuth} />} />
 
           <Route path="/register" element={<Signup />} />
-
-          <Route path="/" element={<Home />} />
 
           <Route path="/leaderboard" element={<Leaderboard />} />
 

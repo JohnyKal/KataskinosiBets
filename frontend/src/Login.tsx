@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "../@/components/ui/card";
 import { useState } from "react";
+import { setToken } from "./utils/authToken.js";
 
 interface LogValues {
   name: string;
@@ -15,17 +16,20 @@ interface LogValues {
 }
 
 type LoginProps = {
-  checkAuth: () => Promise<void>;
+  loginSuccess: () => Promise<void>;
 };
 
-export default function Login({ checkAuth }: LoginProps) {
+export default function Login({ loginSuccess }: LoginProps) {
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL;
+
+  const API_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const [error, setError] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4">
+
       <h1
         className="
           text-white
@@ -40,6 +44,7 @@ export default function Login({ checkAuth }: LoginProps) {
         Συνδέσου και παίξε! 🍀
       </h1>
 
+
       <Card
         className="
           w-full
@@ -53,7 +58,9 @@ export default function Login({ checkAuth }: LoginProps) {
           shadow-[0_0_40px_rgba(255,215,0,0.35)]
         "
       >
+
         <CardHeader className="text-center">
+
           <CardTitle
             className="
               text-3xl
@@ -64,12 +71,18 @@ export default function Login({ checkAuth }: LoginProps) {
             ΣΥΝΔΕΣΗ 🎰
           </CardTitle>
 
+
           <CardDescription className="text-gray-600">
+
             Μπες στον λογαριασμό σου και ξεκίνα τα στοιχήματα
+
           </CardDescription>
 
+
           <p className="text-sm mt-3">
+
             Δεν έχεις λογαριασμό;{" "}
+
             <Link
               to="/register"
               className="
@@ -80,82 +93,129 @@ export default function Login({ checkAuth }: LoginProps) {
             >
               Εγγραφή
             </Link>
+
           </p>
+
         </CardHeader>
 
+
+
         <CardContent>
+
           <Formik<LogValues>
+
             initialValues={{
               name: "",
               password: "",
             }}
+
+
             onSubmit={async (values, { setSubmitting }) => {
+
               setError("");
 
               try {
-                const res = await fetch(`${API_URL}/api/auth/login`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(values),
-                });
+
+                const res = await fetch(
+                  `${API_URL}/api/auth/login`,
+                  {
+                    method: "POST",
+
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+
+                    body: JSON.stringify(values),
+                  }
+                );
+
 
                 if (!res.ok) {
+
                   setError("Λάθος όνομα ή κωδικός");
+
                   return;
                 }
+
+
 
                 const data = await res.json();
 
-                console.log("Login response:", data);
-                console.log("AAAAAA");
+
+                console.log(
+                  "Login response:",
+                  data
+                );
+
+
 
                 if (!data.token) {
-                  console.error("No token received!");
+
+                  console.error(
+                    "No token received!"
+                  );
+
+                  setError(
+                    "Δεν λήφθηκε token"
+                  );
+
                   return;
                 }
 
-                sessionStorage.setItem("token", data.token);
 
-                console.log("Immediately after set:", localStorage.getItem("token"));
 
-                console.log("Stored token:", localStorage.getItem("token"));
+                // Save JWT token
+                // localStorage if available
+                // memory fallback otherwise
 
-                await checkAuth();
+                setToken(data.token);
+
+
+
+                // Refresh authentication state
+                await loginSuccess();
+
+
 
                 navigate("/");
-              } catch(err) {
-                console.error("Login error:", err);
-                setError("Δεν ήταν δυνατή η σύνδεση");
+
+
+              } catch (err) {
+
+                console.error(
+                  "Login error:",
+                  err
+                );
+
+                setError(
+                  "Δεν ήταν δυνατή η σύνδεση"
+                );
+
+
               } finally {
+
                 setSubmitting(false);
+
               }
+
             }}
+
           >
+
+
             {({ isSubmitting }) => (
+
               <Form className="flex flex-col gap-5">
-                <Field
-                  name="name"
-                  type="text"
-                  placeholder="Όνομα"
-                  className="
-                    rounded-xl
-                    border
-                    border-gray-300
-                    px-4
-                    py-3
-                    outline-none
-                    focus:border-red-500
-                    focus:ring-2
-                    focus:ring-red-200
-                  "
-                />
+
 
                 <Field
-                  name="password"
-                  type="password"
-                  placeholder="Κωδικός"
+
+                  name="name"
+
+                  type="text"
+
+                  placeholder="Όνομα"
+
                   className="
                     rounded-xl
                     border
@@ -167,9 +227,37 @@ export default function Login({ checkAuth }: LoginProps) {
                     focus:ring-2
                     focus:ring-red-200
                   "
+
                 />
+
+
+
+                <Field
+
+                  name="password"
+
+                  type="password"
+
+                  placeholder="Κωδικός"
+
+                  className="
+                    rounded-xl
+                    border
+                    border-gray-300
+                    px-4
+                    py-3
+                    outline-none
+                    focus:border-red-500
+                    focus:ring-2
+                    focus:ring-red-200
+                  "
+
+                />
+
+
 
                 {error && (
+
                   <p
                     className="
                       text-center
@@ -179,11 +267,17 @@ export default function Login({ checkAuth }: LoginProps) {
                   >
                     {error}
                   </p>
+
                 )}
 
+
+
                 <button
+
                   type="submit"
+
                   disabled={isSubmitting}
+
                   className="
                     mt-3
                     rounded-full
@@ -206,14 +300,32 @@ export default function Login({ checkAuth }: LoginProps) {
                     active:shadow-[0_3px_0_#7f1d1d]
                     disabled:opacity-70
                   "
+
                 >
-                  {isSubmitting ? "Σύνδεση..." : "Σύνδεση 🎲"}
+
+                  {
+                    isSubmitting
+                      ? "Σύνδεση..."
+                      : "Σύνδεση 🎲"
+                  }
+
                 </button>
+
+
               </Form>
+
             )}
+
+
           </Formik>
+
+
         </CardContent>
+
+
       </Card>
+
+
     </div>
   );
 }
