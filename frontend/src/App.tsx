@@ -33,15 +33,15 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-
   const checkAuth = async () => {
     try {
-     
+      console.log("checkAuth started");
       const token = localStorage.getItem("token");
+      console.log("Token inside checkAuth:", token);
       const res = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
-      },
+        },
       });
 
       if (!res.ok) throw new Error();
@@ -120,13 +120,13 @@ export default function App() {
                   </Link>
                   <Link to="/live_stoixima">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
-                    🎰 Στοίχημα
+                      🎰 Στοίχημα
                     </MenubarItem>
                   </Link>
 
                   <Link to="/signin">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
-                    ✨ Σύνδεση
+                      ✨ Σύνδεση
                     </MenubarItem>
                   </Link>
 
@@ -268,7 +268,6 @@ export default function App() {
           <Route path="/live_stoixima" element={<Stoixima />} />
 
           <Route path="/awesomeadmin" element={<Admin />} />
-
         </Routes>
       </div>
     </BrowserRouter>
