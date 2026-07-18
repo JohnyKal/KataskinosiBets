@@ -21,17 +21,12 @@ export default function SlotMachine() {
 
   const [spinning, setSpinning] = useState(false);
 
-  const [spinningReels, setSpinningReels] = useState([
-    false,
-    false,
-    false,
-  ]);
+  const [spinningReels, setSpinningReels] = useState([false, false, false]);
 
   const [win, setWin] = useState(false);
 
   const randomSymbol = (): SymbolType =>
     symbols[Math.floor(Math.random() * symbols.length)];
-
 
   const spin = () => {
     if (spinning) return;
@@ -45,99 +40,51 @@ export default function SlotMachine() {
 
     if (isWin) {
       const symbol = randomSymbol();
-      finalReels = [
-        symbol,
-        symbol,
-        symbol,
-      ];
+      finalReels = [symbol, symbol, symbol];
     } else {
       do {
-        finalReels = [
-          randomSymbol(),
-          randomSymbol(),
-          randomSymbol(),
-        ];
+        finalReels = [randomSymbol(), randomSymbol(), randomSymbol()];
       } while (
         finalReels[0].text === finalReels[1].text &&
         finalReels[1].text === finalReels[2].text
       );
     }
 
-
     const reel1 = setInterval(() => {
-      setReels((r) => [
-        randomSymbol(),
-        r[1],
-        r[2],
-      ]);
+      setReels((r) => [randomSymbol(), r[1], r[2]]);
     }, 70);
-
 
     const reel2 = setInterval(() => {
-      setReels((r) => [
-        r[0],
-        randomSymbol(),
-        r[2],
-      ]);
+      setReels((r) => [r[0], randomSymbol(), r[2]]);
     }, 70);
-
 
     const reel3 = setInterval(() => {
-      setReels((r) => [
-        r[0],
-        r[1],
-        randomSymbol(),
-      ]);
+      setReels((r) => [r[0], r[1], randomSymbol()]);
     }, 70);
-
-
 
     // Stop first reel
     setTimeout(() => {
       clearInterval(reel1);
 
-      setReels((r) => [
-        finalReels[0],
-        r[1],
-        r[2],
-      ]);
+      setReels((r) => [finalReels[0], r[1], r[2]]);
 
-      setSpinningReels([
-        false,
-        true,
-        true,
-      ]);
-
+      setSpinningReels([false, true, true]);
     }, 2200);
-
-
 
     // Stop second reel
     setTimeout(() => {
       clearInterval(reel2);
 
-      setReels((r) => [
-        r[0],
-        finalReels[1],
-        r[2],
-      ]);
+      setReels((r) => [r[0], finalReels[1], r[2]]);
 
-      setSpinningReels([
-        false,
-        false,
-        true,
-      ]);
-
+      setSpinningReels([false, false, true]);
     }, 3200);
-
-
 
     // Stop third reel
     setTimeout(() => {
       clearInterval(reel3);
 
       setReels(finalReels);
-
 
       if (
         finalReels[0].text === finalReels[1].text &&
@@ -150,21 +97,15 @@ export default function SlotMachine() {
         }, 3000);
       }
 
-
-      setSpinningReels([
-        false,
-        false,
-        false,
-      ]);
+      setSpinningReels([false, false, false]);
 
       setSpinning(false);
-
     }, 4200);
   };
 
-
   return (
-    <div className="
+    <div
+      className="
       min-h-screen
       bg-gradient-to-b
       from-red-950
@@ -174,9 +115,8 @@ export default function SlotMachine() {
       items-center
       justify-center
       px-4
-    ">
-
-
+    "
+    >
       <Card
         className="
           relative
@@ -190,8 +130,6 @@ export default function SlotMachine() {
           overflow-hidden
         "
       >
-
-
         {win && (
           <div
             className="
@@ -206,38 +144,38 @@ export default function SlotMachine() {
               animate-pulse
             "
           >
-
-            <div className="
+            <div
+              className="
               text-center
               animate-bounce
-            ">
-
-              <div className="
+            "
+            >
+              <div
+                className="
                 text-7xl
                 font-black
                 text-yellow-300
                 drop-shadow-[0_0_20px_gold]
-              ">
+              "
+              >
                 🎉 WIN! 🎉
               </div>
 
-
-              <div className="
+              <div
+                className="
                 text-4xl
                 mt-4
-              ">
+              "
+              >
                 🏆 JACKPOT 🏆
               </div>
-
             </div>
-
           </div>
         )}
 
-
-
         {/* Top Lights */}
-        <div className="
+        <div
+          className="
           flex
           justify-center
           gap-2
@@ -246,7 +184,8 @@ export default function SlotMachine() {
           from-yellow-500
           via-yellow-300
           to-yellow-500
-        ">
+        "
+        >
           {Array.from({ length: 18 }).map((_, i) => (
             <div
               key={i}
@@ -261,11 +200,8 @@ export default function SlotMachine() {
           ))}
         </div>
 
-
-
         {/* Title */}
         <div className="py-6 text-center">
-
           <h1
             className="
               text-5xl
@@ -279,22 +215,21 @@ export default function SlotMachine() {
             VEGAS SLOT
           </h1>
 
-
-          <p className="
+          <p
+            className="
             text-yellow-100
             mt-2
             tracking-[0.4em]
             text-sm
-          ">
+          "
+          >
             TRY YOUR LUCK
           </p>
-
         </div>
 
-
-
         {/* Slots */}
-        <div className="
+        <div
+          className="
           mx-6
           rounded-2xl
           border-4
@@ -302,79 +237,73 @@ export default function SlotMachine() {
           bg-black
           p-6
           shadow-inner
-        ">
-
-          <div className="
+        "
+        >
+          <div
+            className="
             grid
             grid-cols-3
             gap-4
-          ">
-
+          "
+          >
             {reels.map((symbol, index) => (
-
               <div
                 key={index}
                 className={`
-                  h-36
-                  rounded-xl
-                  border-2
-                  border-yellow-300
-                  bg-white
-                  flex
-                  items-center
-                  justify-center
-                  text-center
-                  shadow-lg
-                  overflow-hidden
-                  ${
-                    spinningReels[index]
-                      ? "animate-bounce"
-                      : ""
-                  }
-                `}
+                    h-36
+                    rounded-xl
+                    border-2
+                    border-yellow-300
+                    bg-white
+                    flex
+                    items-center
+                    justify-center
+                    overflow-hidden
+                    shadow-lg
+                    ${spinningReels[index] ? "animate-bounce" : ""}
+                  `}
               >
-
-                <div className="
-                  flex
-                  flex-col
-                  items-center
-                  justify-center
-                  px-2
-                ">
-
-                  <span className="
-                    text-[14px]
-                    font-black
-                    leading-tight
-                    break-words
-                  ">
+                <div
+                  className="
+  w-full
+  flex
+  flex-col
+  items-center
+  justify-center
+  px-1
+  overflow-hidden
+"
+                >
+                  <span
+                    className="
+  max-w-full
+  text-[12px]
+  font-black
+  leading-tight
+  text-center
+  break-all
+  overflow-hidden
+"
+                  >
                     {symbol.text}
                   </span>
 
-
-                  <span className="
+                  <span
+                    className="
                     text-3xl
                     mt-1
-                  ">
+                  "
+                  >
                     {symbol.emoji}
                   </span>
-
                 </div>
-
               </div>
-
             ))}
-
           </div>
-
         </div>
-
-
-
 
         {/* Button */}
         <div className="flex justify-center py-10">
-
           <Button
             onClick={spin}
             disabled={spinning}
@@ -398,14 +327,11 @@ export default function SlotMachine() {
           >
             {spinning ? "SPINNING..." : "SPIN"}
           </Button>
-
         </div>
 
-
-
-
         {/* Bottom Lights */}
-        <div className="
+        <div
+          className="
           flex
           justify-center
           gap-2
@@ -414,7 +340,8 @@ export default function SlotMachine() {
           from-yellow-500
           via-yellow-300
           to-yellow-500
-        ">
+        "
+        >
           {Array.from({ length: 18 }).map((_, i) => (
             <div
               key={i}
@@ -428,10 +355,7 @@ export default function SlotMachine() {
             />
           ))}
         </div>
-
-
       </Card>
-
     </div>
   );
 }
