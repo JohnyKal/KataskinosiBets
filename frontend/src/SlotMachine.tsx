@@ -36,7 +36,7 @@ export default function SlotMachine() {
     }
 
     const interval = setInterval(() => {
-      setReels((prev) => [
+      setReels(() => [
         stopped[0]
           ? finalReels[0]
           : symbols[Math.floor(Math.random() * symbols.length)],
