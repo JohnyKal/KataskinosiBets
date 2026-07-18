@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "../@/components/ui/card";
 import { Button } from "../@/components/ui/button";
 
@@ -13,6 +14,8 @@ const symbols = [
 type SymbolType = (typeof symbols)[number];
 
 export default function SlotMachine() {
+  const navigate = useNavigate();
+
   const [reels, setReels] = useState<SymbolType[]>([
     symbols[0],
     symbols[1],
@@ -20,9 +23,7 @@ export default function SlotMachine() {
   ]);
 
   const [spinning, setSpinning] = useState(false);
-
   const [spinningReels, setSpinningReels] = useState([false, false, false]);
-
   const [win, setWin] = useState(false);
 
   const randomSymbol = (): SymbolType =>
@@ -62,25 +63,18 @@ export default function SlotMachine() {
       setReels((r) => [r[0], r[1], randomSymbol()]);
     }, 70);
 
-    // Stop first reel
     setTimeout(() => {
       clearInterval(reel1);
-
       setReels((r) => [finalReels[0], r[1], r[2]]);
-
       setSpinningReels([false, true, true]);
     }, 2200);
 
-    // Stop second reel
     setTimeout(() => {
       clearInterval(reel2);
-
       setReels((r) => [r[0], finalReels[1], r[2]]);
-
       setSpinningReels([false, false, true]);
     }, 3200);
 
-    // Stop third reel
     setTimeout(() => {
       clearInterval(reel3);
 
@@ -98,7 +92,6 @@ export default function SlotMachine() {
       }
 
       setSpinningReels([false, false, false]);
-
       setSpinning(false);
     }, 4200);
   };
@@ -112,11 +105,41 @@ export default function SlotMachine() {
       via-black
       to-red-950
       flex
+      flex-col
       items-center
       justify-center
       px-4
+      gap-5
     "
     >
+      {/* Return Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="
+          rounded-full
+          border-2 border-amber-300
+          bg-gradient-to-b
+          from-red-500
+          via-red-600
+          to-red-800
+          px-8
+          py-2.5
+          font-black
+          uppercase
+          tracking-wide
+          text-white
+          shadow-[0_8px_0_#7f1d1d,0_0_30px_rgba(239,68,68,0.45)]
+          transition-all
+          duration-200
+          hover:-translate-y-1
+          hover:shadow-[0_10px_0_#7f1d1d,0_0_40px_rgba(250,204,21,0.4)]
+          active:translate-y-[5px]
+          active:shadow-[0_3px_0_#7f1d1d]
+        "
+      >
+        🏠 ΠΙΣΩ
+      </button>
+
       <Card
         className="
           relative
@@ -144,12 +167,7 @@ export default function SlotMachine() {
               animate-pulse
             "
           >
-            <div
-              className="
-              text-center
-              animate-bounce
-            "
-            >
+            <div className="text-center animate-bounce">
               <div
                 className="
                 text-7xl
@@ -161,19 +179,11 @@ export default function SlotMachine() {
                 🎉 WIN! 🎉
               </div>
 
-              <div
-                className="
-                text-4xl
-                mt-4
-              "
-              >
-                🏆 JACKPOT 🏆
-              </div>
+              <div className="text-4xl mt-4">🏆 JACKPOT 🏆</div>
             </div>
           </div>
         )}
 
-        {/* Top Lights */}
         <div
           className="
           flex
@@ -200,7 +210,6 @@ export default function SlotMachine() {
           ))}
         </div>
 
-        {/* Title */}
         <div className="py-6 text-center">
           <h1
             className="
@@ -227,7 +236,6 @@ export default function SlotMachine() {
           </p>
         </div>
 
-        {/* Slots */}
         <div
           className="
           mx-6
@@ -239,70 +247,45 @@ export default function SlotMachine() {
           shadow-inner
         "
         >
-          <div
-            className="
-            grid
-            grid-cols-3
-            gap-4
-          "
-          >
+          <div className="grid grid-cols-3 gap-4">
             {reels.map((symbol, index) => (
               <div
                 key={index}
                 className={`
-                    h-36
-                    rounded-xl
-                    border-2
-                    border-yellow-300
-                    bg-white
-                    flex
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    shadow-lg
-                    ${spinningReels[index] ? "animate-bounce" : ""}
-                  `}
+                  h-36
+                  rounded-xl
+                  border-2
+                  border-yellow-300
+                  bg-white
+                  flex
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  shadow-lg
+                  ${spinningReels[index] ? "animate-bounce" : ""}
+                `}
               >
-                <div
-                  className="
-  w-full
-  flex
-  flex-col
-  items-center
-  justify-center
-  px-1
-  overflow-hidden
-"
-                >
+                <div className="flex flex-col items-center justify-center px-1">
                   <span
                     className="
-  max-w-full
-  text-[12px]
-  font-black
-  leading-tight
-  text-center
-  break-all
-  overflow-hidden
-"
+                    max-w-full
+                    text-[12px]
+                    font-black
+                    text-black
+                    text-center
+                    break-all
+                  "
                   >
                     {symbol.text}
                   </span>
 
-                  <span
-                    className="
-                    text-3xl
-                    mt-1
-                  "
-                  >
-                    {symbol.emoji}
-                  </span>
+                  <span className="text-3xl mt-1">{symbol.emoji}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Button */}
         <div className="flex justify-center py-10">
           <Button
             onClick={spin}
@@ -329,7 +312,6 @@ export default function SlotMachine() {
           </Button>
         </div>
 
-        {/* Bottom Lights */}
         <div
           className="
           flex
