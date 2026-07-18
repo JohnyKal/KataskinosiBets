@@ -158,10 +158,9 @@ export default function App() {
 
                   <Link to="/slotmachine">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
-                    🍒 Κουλοχέρης
+                      🍒 Κουλοχέρης
                     </MenubarItem>
                   </Link>
-
                 </MenubarGroup>
               </MenubarContent>
             </MenubarMenu>
@@ -208,6 +207,10 @@ export default function App() {
                 <div className="rounded-xl bg-green-950/50 p-4 border border-green-600">
                   ⚡ Η ιστοσελίδα είναι ΑΠΛΗ και ΕΥΚΟΛΗ
                 </div>
+
+                <p className="text-gray-300 mt-4 text-center">
+                  📞 Για οποιοδήποτε πρόβλημα: πάρε με απόκρυψη, ή στείλε σήματα καπνού, ή σύνταξε ένα email.
+                </p>
               </div>
 
               <SheetFooter className="mt-8">
@@ -224,8 +227,96 @@ export default function App() {
             path="/"
             element={
               loading ? (
-                <div className="min-h-screen flex items-center justify-center text-white">
-                  Φόρτωση...
+                <div
+                  className="
+                    min-h-screen
+                    flex
+                    items-center
+                    justify-center
+                    text-white
+                    bg-black/20
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      flex-col
+                      items-center
+                      gap-6
+                      rounded-3xl
+                      bg-green-950/80
+                      border
+                      border-yellow-500/40
+                      px-10
+                      py-12
+                      shadow-[0_0_40px_rgba(234,179,8,0.35)]
+                    "
+                  >
+                    {/* Casino loading icon */}
+                    <div className="relative">
+                      <div
+                        className="
+                          h-24
+                          w-24
+                          rounded-full
+                          border-8
+                          border-yellow-500/30
+                          border-t-yellow-400
+                          animate-spin
+                        "
+                      />
+
+                      <div
+                        className="
+                          absolute
+                          inset-0
+                          flex
+                          items-center
+                          justify-center
+                          text-4xl
+                        "
+                      >
+                        🎰
+                      </div>
+                    </div>
+
+                    <div className="text-center space-y-2">
+                      <h2
+                        className="
+                          text-2xl
+                          font-bold
+                          text-yellow-400
+                          animate-pulse
+                        "
+                      >
+                        Περίμενε να φορτώσει η ιστοσελίδα 🎲
+                      </h2>
+
+                      <p
+                        className="
+                          text-green-200
+                          text-lg
+                        "
+                      >
+                        🕵️ Ξυπνάμε τους servers από το darkweb...
+                      </p>
+                    </div>
+
+                    {/* Fake casino slots */}
+                    <div className="flex gap-3 text-3xl">
+                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce">
+                        🍒
+                      </div>
+
+                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-150">
+                        7️⃣
+                      </div>
+
+                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-300">
+                        💎
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : user ? (
                 <Home />
@@ -246,7 +337,6 @@ export default function App() {
           <Route path="/awesomeadmin" element={<Admin />} />
 
           <Route path="/slotmachine" element={<SlotMachine />} />
-
         </Routes>
       </div>
     </BrowserRouter>
