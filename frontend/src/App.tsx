@@ -132,7 +132,7 @@ export default function App() {
                     </MenubarItem>
                   </Link>
 
-                  <Link to="/leaderboard">
+                  {/* <Link to="/leaderboard">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
                       💎 Leaderboard
                     </MenubarItem>
@@ -142,7 +142,7 @@ export default function App() {
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
                       🎰 Στοίχημα
                     </MenubarItem>
-                  </Link>
+                  </Link> */}
 
                   <Link to="/signin">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
@@ -156,11 +156,11 @@ export default function App() {
                     </MenubarItem>
                   </Link>
 
-                  <Link to="/slotmachine">
+                  {/* <Link to="/slotmachine">
                     <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
                       🍒 Κουλοχέρης
                     </MenubarItem>
-                  </Link>
+                  </Link> */}
                 </MenubarGroup>
               </MenubarContent>
             </MenubarMenu>
