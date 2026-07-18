@@ -10,9 +10,9 @@ export default function SlotMachine() {
 
   const spin = () => {
     if (spinning) return;
-
+  
     setSpinning(true);
-
+  
     const interval = setInterval(() => {
       setReels([
         symbols[Math.floor(Math.random() * symbols.length)],
@@ -20,16 +20,35 @@ export default function SlotMachine() {
         symbols[Math.floor(Math.random() * symbols.length)],
       ]);
     }, 70);
-
+  
     setTimeout(() => {
       clearInterval(interval);
-
-      setReels([
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-      ]);
-
+  
+      const isWin = Math.random() < 0.5; // 50% chance
+  
+      let finalReels: string[];
+  
+      if (isWin) {
+        // All three symbols match
+        const winningSymbol =
+          symbols[Math.floor(Math.random() * symbols.length)];
+  
+        finalReels = [winningSymbol, winningSymbol, winningSymbol];
+      } else {
+        // Keep generating until it is NOT a winning combination
+        do {
+          finalReels = [
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)],
+            symbols[Math.floor(Math.random() * symbols.length)],
+          ];
+        } while (
+          finalReels[0] === finalReels[1] &&
+          finalReels[1] === finalReels[2]
+        );
+      }
+  
+      setReels(finalReels);
       setSpinning(false);
     }, 2200);
   };
@@ -141,7 +160,9 @@ export default function SlotMachine() {
           >
             {spinning ? "SPINNING..." : "SPIN"}
           </Button>
+          
         </div>
+        
 
         {/* Bottom Lights */}
         <div className="flex justify-center gap-2 py-3 bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
