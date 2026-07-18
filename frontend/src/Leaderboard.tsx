@@ -9,125 +9,94 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../src/config";
 import { getToken } from "./utils/authToken.js";
 
-
 interface User {
   _id: string;
   name: string;
   score: number;
 }
 
-
 export default function Leaderboard() {
-
   const [users, setUsers] = useState<User[]>([]);
 
   const navigate = useNavigate();
 
-
-
   useEffect(() => {
-
     const fetchLeaderboard = async () => {
-
       try {
-
         const token = getToken();
 
-
-        const res = await fetch(
-          `${API_URL}/api/leaderboard`,
-          {
-            headers: {
-
-              Authorization:
-                `Bearer ${token}`,
-
-            },
-          }
-        );
-
-
+        const res = await fetch(`${API_URL}/api/leaderboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!res.ok) {
-
-          throw new Error(
-            "Failed to fetch leaderboard"
-          );
-
+          throw new Error("Failed to fetch leaderboard");
         }
-
-
 
         const data = await res.json();
 
-
         setUsers(data);
-
-
-
       } catch (err) {
-
         console.error(err);
-
       }
-
     };
 
-
     fetchLeaderboard();
-
-
   }, []);
 
-
-
-
-
-  const sortedUsers = [...users].sort(
-    (a, b) => b.score - a.score
-  );
-
-
+  const sortedUsers = [...users].sort((a, b) => b.score - a.score);
 
   let currentRank = 1;
 
   let previousScore: number | null = null;
 
-
-
-  const rankedUsers = sortedUsers.map(
-    (user, index) => {
-
-      if (previousScore !== user.score) {
-
-        currentRank = index + 1;
-
-      }
-
-
-      previousScore = user.score;
-
-
-
-      return {
-
-        ...user,
-
-        rank: currentRank,
-
-      };
-
+  const rankedUsers = sortedUsers.map((user, index) => {
+    if (previousScore !== user.score) {
+      currentRank = index + 1;
     }
-  );
 
+    previousScore = user.score;
 
+    return {
+      ...user,
 
-
+      rank: currentRank,
+    };
+  });
 
   return (
-
     <>
+      <div className="flex justify-center mb-6">
+        <button
+          onClick={() => navigate("/")}
+          className="
+    px-5
+    py-2
+    rounded-full
 
+    bg-black/30
+    backdrop-blur-sm
+
+    border
+    border-yellow-500/30
+
+    text-yellow-200
+    font-medium
+
+    shadow-lg
+
+    hover:bg-black/40
+    hover:border-yellow-400/60
+
+    transition-all
+    duration-300
+  "
+        >
+          🏠 Επιστροφή στην αρχική
+        </button>
+      </div>
 
       <Card
         className="
@@ -145,11 +114,7 @@ export default function Leaderboard() {
           text-white
         "
       >
-
-
         <CardHeader className="px-4 py-3">
-
-
           <CardTitle
             className="
               text-3xl
@@ -161,28 +126,14 @@ export default function Leaderboard() {
               drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]
             "
           >
-
             🏆 LEADERBOARD
-
           </CardTitle>
-
-
         </CardHeader>
 
-
-
-
-
         <CardContent className="px-4 pb-4 space-y-3">
-
-
           {rankedUsers.map((user) => (
-
-
             <div
-
               key={user._id}
-
               className="
                 flex
                 items-center
@@ -199,14 +150,10 @@ export default function Leaderboard() {
                 hover:border-yellow-400/40
                 hover:translate-x-1
               "
-
             >
-
-
               {/* Rank */}
 
               <div
-
                 className="
                   flex
                   h-10
@@ -222,16 +169,9 @@ export default function Leaderboard() {
                   text-black
                   shadow-[0_0_15px_rgba(250,204,21,0.6)]
                 "
-
               >
-
                 {user.rank}
-
               </div>
-
-
-
-
 
               {/* Name */}
 
@@ -243,92 +183,25 @@ export default function Leaderboard() {
                   font-semibold
                 "
               >
-
                 {user.name}
-
               </span>
-
-
-
-
 
               {/* Score */}
 
               <span
-
                 className="
                   text-xl
                   font-extrabold
                   text-red-400
                   drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]
                 "
-
               >
-
                 {user.score}
-
               </span>
-
-
-
             </div>
-
-
           ))}
-
-
-
         </CardContent>
-
-
       </Card>
-
-
-
-
-
-      <div className="flex justify-center mb-10">
-
-
-        <button
-
-          onClick={() => navigate("/")}
-
-          className="
-            px-5
-            py-2
-            rounded-full
-
-            bg-black/30
-            backdrop-blur-sm
-
-            border
-            border-yellow-500/30
-
-            text-yellow-200
-            font-medium
-
-            shadow-lg
-
-            hover:bg-black/40
-            hover:border-yellow-400/60
-
-            transition-all
-            duration-300
-          "
-
-        >
-
-          🏠 Επιστροφή στην αρχική
-
-        </button>
-
-
-      </div>
-
-
     </>
-
   );
-
 }

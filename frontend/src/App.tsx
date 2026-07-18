@@ -29,6 +29,7 @@ import {
 import Leaderboard from "./Leaderboard.tsx";
 
 import { getToken } from "./utils/authToken.js";
+import SlotMachine from "./SlotMachine.tsx";
 
 export default function App() {
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -154,6 +155,13 @@ export default function App() {
                       🃏 Εγγραφή
                     </MenubarItem>
                   </Link>
+
+                  <Link to="/slotmachine">
+                    <MenubarItem className="text-white hover:bg-yellow-500/20 cursor-pointer">
+                    🍒 Κουλοχέρης
+                    </MenubarItem>
+                  </Link>
+
                 </MenubarGroup>
               </MenubarContent>
             </MenubarMenu>
@@ -236,6 +244,9 @@ export default function App() {
           <Route path="/live_stoixima" element={<Stoixima />} />
 
           <Route path="/awesomeadmin" element={<Admin />} />
+
+          <Route path="/slotmachine" element={<SlotMachine />} />
+
         </Routes>
       </div>
     </BrowserRouter>
