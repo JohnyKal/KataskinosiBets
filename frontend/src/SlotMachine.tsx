@@ -22,35 +22,43 @@ export default function SlotMachine() {
     }, 70);
   
     setTimeout(() => {
-      clearInterval(interval);
-  
-      const isWin = Math.random() < 0.5; // 50% chance
-  
-      let finalReels: string[];
-  
-      if (isWin) {
-        // All three symbols match
-        const winningSymbol =
-          symbols[Math.floor(Math.random() * symbols.length)];
-  
-        finalReels = [winningSymbol, winningSymbol, winningSymbol];
-      } else {
-        // Keep generating until it is NOT a winning combination
-        do {
-          finalReels = [
-            symbols[Math.floor(Math.random() * symbols.length)],
-            symbols[Math.floor(Math.random() * symbols.length)],
-            symbols[Math.floor(Math.random() * symbols.length)],
-          ];
-        } while (
-          finalReels[0] === finalReels[1] &&
-          finalReels[1] === finalReels[2]
-        );
-      }
-  
-      setReels(finalReels);
-      setSpinning(false);
-    }, 2200);
+        clearInterval(interval);
+      
+        const isWin = Math.random() < 0.3;
+      
+        let finalReels: string[];
+      
+        if (isWin) {
+          const winningSymbol =
+            symbols[Math.floor(Math.random() * symbols.length)];
+      
+          finalReels = [winningSymbol, winningSymbol, winningSymbol];
+        } else {
+          do {
+            finalReels = [
+              symbols[Math.floor(Math.random() * symbols.length)],
+              symbols[Math.floor(Math.random() * symbols.length)],
+              symbols[Math.floor(Math.random() * symbols.length)],
+            ];
+          } while (
+            finalReels[0] === finalReels[1] &&
+            finalReels[1] === finalReels[2]
+          );
+        }
+      
+        // Stop reels one by one
+        setReels((prev) => [finalReels[0], prev[1], prev[2]]);
+      
+        setTimeout(() => {
+          setReels((prev) => [prev[0], finalReels[1], prev[2]]);
+        }, 250);
+      
+        setTimeout(() => {
+          setReels(finalReels);
+          setSpinning(false);
+        }, 500);
+      
+      }, 2200);
   };
 
   return (
