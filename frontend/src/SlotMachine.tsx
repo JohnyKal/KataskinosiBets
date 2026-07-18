@@ -46,17 +46,19 @@ export default function SlotMachine() {
           );
         }
       
-        // Stop reels one by one
-        setReels((prev) => [finalReels[0], prev[1], prev[2]]);
-      
-        setTimeout(() => {
-          setReels((prev) => [prev[0], finalReels[1], prev[2]]);
-        }, 250);
-      
-        setTimeout(() => {
-          setReels(finalReels);
-          setSpinning(false);
-        }, 500);
+        // Stop first reel
+setReels((prev) => [finalReels[0], prev[1], prev[2]]);
+
+// Stop second reel after 1 second
+setTimeout(() => {
+  setReels((prev) => [prev[0], finalReels[1], prev[2]]);
+}, 1000);
+
+// Stop third reel after another second
+setTimeout(() => {
+  setReels(finalReels);
+  setSpinning(false);
+}, 2000);
       
       }, 2200);
   };
