@@ -7,16 +7,18 @@ const symbols = ["🍒", "🍋", "💎", "7️⃣", "🔔", "⭐"];
 export default function SlotMachine() {
   const [reels, setReels] = useState(["🍒", "🍋", "💎"]);
   const [spinning, setSpinning] = useState(false);
+  const [stopped, setStopped] = useState([false, false, false]);
 
   const spin = () => {
     if (spinning) return;
-  
+    setStopped([false, false, false]);
+
     setSpinning(true);
-  
+
     const isWin = Math.random() < 0.3;
-  
+
     let finalReels: string[];
-  
+
     if (isWin) {
       const symbol = symbols[Math.floor(Math.random() * symbols.length)];
       finalReels = [symbol, symbol, symbol];
@@ -32,31 +34,37 @@ export default function SlotMachine() {
         finalReels[1] === finalReels[2]
       );
     }
-  
+
     const interval = setInterval(() => {
       setReels((prev) => [
-        prev[0] === finalReels[0] ? prev[0] : symbols[Math.floor(Math.random() * symbols.length)],
-        prev[1] === finalReels[1] ? prev[1] : symbols[Math.floor(Math.random() * symbols.length)],
-        prev[2] === finalReels[2] ? prev[2] : symbols[Math.floor(Math.random() * symbols.length)],
+        stopped[0]
+          ? finalReels[0]
+          : symbols[Math.floor(Math.random() * symbols.length)],
+        stopped[1]
+          ? finalReels[1]
+          : symbols[Math.floor(Math.random() * symbols.length)],
+        stopped[2]
+          ? finalReels[2]
+          : symbols[Math.floor(Math.random() * symbols.length)],
       ]);
     }, 70);
-  
-    // Stop first reel
+
     setTimeout(() => {
-      setReels((prev) => [finalReels[0], prev[1], prev[2]]);
+      setStopped((prev) => [true, prev[1], prev[2]]);
     }, 2200);
-  
-    // Stop second reel
+
     setTimeout(() => {
-      setReels((prev) => [prev[0], finalReels[1], prev[2]]);
+      setStopped((prev) => [prev[0], true, prev[2]]);
     }, 3200);
-  
-    // Stop third reel
+
     setTimeout(() => {
-      setReels(finalReels);
+      setStopped((prev) => [prev[0], prev[1], true]);
+    }, 4200);
+
+    setTimeout(() => {
       clearInterval(interval);
       setSpinning(false);
-    }, 4200);
+    }, 4300);
   };
 
   return (
@@ -120,11 +128,7 @@ export default function SlotMachine() {
                   justify-center
                   text-6xl
                   shadow-lg
-                  ${
-                    spinning
-                      ? "animate-bounce"
-                      : ""
-                  }
+                  ${spinning ? "animate-bounce" : ""}
                 `}
               >
                 {symbol}
@@ -166,9 +170,7 @@ export default function SlotMachine() {
           >
             {spinning ? "SPINNING..." : "SPIN"}
           </Button>
-          
         </div>
-        
 
         {/* Bottom Lights */}
         <div className="flex justify-center gap-2 py-3 bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
