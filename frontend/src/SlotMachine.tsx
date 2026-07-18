@@ -13,54 +13,50 @@ export default function SlotMachine() {
   
     setSpinning(true);
   
+    const isWin = Math.random() < 0.3;
+  
+    let finalReels: string[];
+  
+    if (isWin) {
+      const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+      finalReels = [symbol, symbol, symbol];
+    } else {
+      do {
+        finalReels = [
+          symbols[Math.floor(Math.random() * symbols.length)],
+          symbols[Math.floor(Math.random() * symbols.length)],
+          symbols[Math.floor(Math.random() * symbols.length)],
+        ];
+      } while (
+        finalReels[0] === finalReels[1] &&
+        finalReels[1] === finalReels[2]
+      );
+    }
+  
     const interval = setInterval(() => {
-      setReels([
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
-        symbols[Math.floor(Math.random() * symbols.length)],
+      setReels((prev) => [
+        prev[0] === finalReels[0] ? prev[0] : symbols[Math.floor(Math.random() * symbols.length)],
+        prev[1] === finalReels[1] ? prev[1] : symbols[Math.floor(Math.random() * symbols.length)],
+        prev[2] === finalReels[2] ? prev[2] : symbols[Math.floor(Math.random() * symbols.length)],
       ]);
     }, 70);
   
+    // Stop first reel
     setTimeout(() => {
-        clearInterval(interval);
-      
-        const isWin = Math.random() < 0.3;
-      
-        let finalReels: string[];
-      
-        if (isWin) {
-          const winningSymbol =
-            symbols[Math.floor(Math.random() * symbols.length)];
-      
-          finalReels = [winningSymbol, winningSymbol, winningSymbol];
-        } else {
-          do {
-            finalReels = [
-              symbols[Math.floor(Math.random() * symbols.length)],
-              symbols[Math.floor(Math.random() * symbols.length)],
-              symbols[Math.floor(Math.random() * symbols.length)],
-            ];
-          } while (
-            finalReels[0] === finalReels[1] &&
-            finalReels[1] === finalReels[2]
-          );
-        }
-      
-        // Stop first reel
-setReels((prev) => [finalReels[0], prev[1], prev[2]]);
-
-// Stop second reel after 1 second
-setTimeout(() => {
-  setReels((prev) => [prev[0], finalReels[1], prev[2]]);
-}, 1000);
-
-// Stop third reel after another second
-setTimeout(() => {
-  setReels(finalReels);
-  setSpinning(false);
-}, 2000);
-      
-      }, 2200);
+      setReels((prev) => [finalReels[0], prev[1], prev[2]]);
+    }, 2200);
+  
+    // Stop second reel
+    setTimeout(() => {
+      setReels((prev) => [prev[0], finalReels[1], prev[2]]);
+    }, 3200);
+  
+    // Stop third reel
+    setTimeout(() => {
+      setReels(finalReels);
+      clearInterval(interval);
+      setSpinning(false);
+    }, 4200);
   };
 
   return (
