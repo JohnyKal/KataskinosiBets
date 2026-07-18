@@ -82,7 +82,7 @@ export default function Home() {
 
         {/* Slot Machine */}
         <button
-          onClick={() => navigate("/slots")}
+          onClick={() => navigate("/slotmachine")}
           className="
             rounded-full
             border-2 border-amber-300
