@@ -7,65 +7,74 @@ const symbols = ["🍒", "🍋", "💎", "7️⃣", "🔔", "⭐"];
 export default function SlotMachine() {
   const [reels, setReels] = useState(["🍒", "🍋", "💎"]);
   const [spinning, setSpinning] = useState(false);
-  const [stopped, setStopped] = useState([false, false, false]);
+  const [spinningReels, setSpinningReels] = useState([false, false, false]);
 
-  const spin = () => {
-    if (spinning) return;
-    setStopped([false, false, false]);
+  const randomSymbol = () =>
+    symbols[Math.floor(Math.random() * symbols.length)];
 
-    setSpinning(true);
+ const spin = () => {
+  if (spinning) return;
+  setSpinningReels([true, true, true]);
 
-    const isWin = Math.random() < 0.3;
+  setSpinning(true);
 
-    let finalReels: string[];
+  const isWin = Math.random() < 0.3;
 
-    if (isWin) {
-      const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-      finalReels = [symbol, symbol, symbol];
-    } else {
-      do {
-        finalReels = [
-          symbols[Math.floor(Math.random() * symbols.length)],
-          symbols[Math.floor(Math.random() * symbols.length)],
-          symbols[Math.floor(Math.random() * symbols.length)],
-        ];
-      } while (
-        finalReels[0] === finalReels[1] &&
-        finalReels[1] === finalReels[2]
-      );
-    }
+  let finalReels: string[];
 
-    const interval = setInterval(() => {
-      setReels(() => [
-        stopped[0]
-          ? finalReels[0]
-          : symbols[Math.floor(Math.random() * symbols.length)],
-        stopped[1]
-          ? finalReels[1]
-          : symbols[Math.floor(Math.random() * symbols.length)],
-        stopped[2]
-          ? finalReels[2]
-          : symbols[Math.floor(Math.random() * symbols.length)],
-      ]);
-    }, 70);
+  if (isWin) {
+    const symbol = randomSymbol();
+    finalReels = [symbol, symbol, symbol];
+  } else {
+    do {
+      finalReels = [
+        randomSymbol(),
+        randomSymbol(),
+        randomSymbol(),
+      ];
+    } while (
+      finalReels[0] === finalReels[1] &&
+      finalReels[1] === finalReels[2]
+    );
+  }
 
-    setTimeout(() => {
-      setStopped((prev) => [true, prev[1], prev[2]]);
-    }, 2200);
+  // Reel 1 spins
+  const reel1 = setInterval(() => {
+    setReels((r) => [randomSymbol(), r[1], r[2]]);
+  }, 70);
 
-    setTimeout(() => {
-      setStopped((prev) => [prev[0], true, prev[2]]);
-    }, 3200);
+  // Reel 2 spins
+  const reel2 = setInterval(() => {
+    setReels((r) => [r[0], randomSymbol(), r[2]]);
+  }, 70);
 
-    setTimeout(() => {
-      setStopped((prev) => [prev[0], prev[1], true]);
-    }, 4200);
+  // Reel 3 spins
+  const reel3 = setInterval(() => {
+    setReels((r) => [r[0], r[1], randomSymbol()]);
+  }, 70);
 
-    setTimeout(() => {
-      clearInterval(interval);
-      setSpinning(false);
-    }, 4300);
-  };
+  // Stop reel 1
+  setTimeout(() => {
+    clearInterval(reel1);
+    setReels((r) => [finalReels[0], r[1], r[2]]);
+  }, 2200);
+  setSpinningReels([false, true, true]);
+
+  // Stop reel 2
+  setTimeout(() => {
+    clearInterval(reel2);
+    setReels((r) => [r[0], finalReels[1], r[2]]);
+  }, 3200);
+  setSpinningReels([false, false, true]);
+
+  // Stop reel 3
+  setTimeout(() => {
+    clearInterval(reel3);
+    setReels(finalReels);
+    setSpinning(false);
+  }, 4200);
+  setSpinningReels([false, false, false]);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-950 via-black to-red-950 flex items-center justify-center px-4">
@@ -128,7 +137,7 @@ export default function SlotMachine() {
                   justify-center
                   text-6xl
                   shadow-lg
-                  ${spinning ? "animate-bounce" : ""}
+                  ${spinningReels[index] ? "animate-bounce" : ""}
                 `}
               >
                 {symbol}
