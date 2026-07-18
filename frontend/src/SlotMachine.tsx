@@ -197,7 +197,7 @@ export default function SlotMachine() {
               <div
                 key={index}
                 className={`
-                    h-32
+                    h-36
                     rounded-xl
                     border-2
                     border-yellow-300
