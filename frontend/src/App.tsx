@@ -200,6 +200,11 @@ export default function App() {
               </SheetHeader>
 
               <div className="mt-8 space-y-5">
+
+              <p className="rounded-xl bg-green-950/50 p-4 border border-blue-800">
+                  Κάνε εγγραφή και μετά σύνδεση. Η ιστοσελίδα μπόρεί να αργήσει 20s να φορτώσει διότι είναι η δωρεάν έκδοση...
+                </p>
+
                 <div className="rounded-xl bg-black/20 p-4 border border-yellow-500/20">
                   📝 Βάλε στο κουτάκι κοντά σε κάθε ερώτηση την απάντησή σου.
                 </div>
@@ -208,7 +213,7 @@ export default function App() {
                   ⚡ Η ιστοσελίδα είναι ΑΠΛΗ και ΕΥΚΟΛΗ
                 </div>
 
-                <p className="text-gray-300 mt-4 text-center">
+                <p className="rounded-xl bg-green-950/50 p-4 border border-red-600">
                   📞 Για οποιοδήποτε πρόβλημα: πάρε με απόκρυψη, ή στείλε σήματα καπνού, ή σύνταξε ένα email.
                 </p>
               </div>
