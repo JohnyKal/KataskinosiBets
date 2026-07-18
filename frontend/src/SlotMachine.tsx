@@ -2,82 +2,149 @@ import { useState } from "react";
 import { Card } from "../@/components/ui/card";
 import { Button } from "../@/components/ui/button";
 
-const symbols = ["ΑΡΧΗΓΟΣ", "ΣΟΣ", "ΚΟΙΝΩΤΑΡΧΗΣ", "ΠΑΙΔΙ", "ΟΜΑΔΑΡΧΗΣ", "⭐"];
+const symbols = [
+  "ΑΡΧΗΓΟΣ",
+  "ΣΟΣ",
+  "ΚΟΙΝΩΤΑΡΧΗΣ",
+  "ΠΑΙΔΙ",
+  "ΟΜΑΔΑΡΧΗΣ",
+  "⭐",
+];
 
 export default function SlotMachine() {
-  const [reels, setReels] = useState(["🍒", "🍋", "💎"]);
+  const [reels, setReels] = useState([
+    "ΑΡΧΗΓΟΣ",
+    "ΣΟΣ",
+    "⭐",
+  ]);
+
   const [spinning, setSpinning] = useState(false);
-  const [spinningReels, setSpinningReels] = useState([false, false, false]);
+
+  const [spinningReels, setSpinningReels] = useState([
+    false,
+    false,
+    false,
+  ]);
 
   const randomSymbol = () =>
     symbols[Math.floor(Math.random() * symbols.length)];
 
- const spin = () => {
-  if (spinning) return;
-  setSpinningReels([true, true, true]);
 
-  setSpinning(true);
+  const spin = () => {
+    if (spinning) return;
 
-  const isWin = Math.random() < 0.3;
+    setSpinning(true);
+    setSpinningReels([true, true, true]);
 
-  let finalReels: string[];
+    const isWin = Math.random() < 0.3;
 
-  if (isWin) {
-    const symbol = randomSymbol();
-    finalReels = [symbol, symbol, symbol];
-  } else {
-    do {
-      finalReels = [
+    let finalReels: string[];
+
+    if (isWin) {
+      const symbol = randomSymbol();
+      finalReels = [symbol, symbol, symbol];
+    } else {
+      do {
+        finalReels = [
+          randomSymbol(),
+          randomSymbol(),
+          randomSymbol(),
+        ];
+      } while (
+        finalReels[0] === finalReels[1] &&
+        finalReels[1] === finalReels[2]
+      );
+    }
+
+
+    const reel1 = setInterval(() => {
+      setReels((r) => [
         randomSymbol(),
+        r[1],
+        r[2],
+      ]);
+    }, 70);
+
+
+    const reel2 = setInterval(() => {
+      setReels((r) => [
+        r[0],
         randomSymbol(),
+        r[2],
+      ]);
+    }, 70);
+
+
+    const reel3 = setInterval(() => {
+      setReels((r) => [
+        r[0],
+        r[1],
         randomSymbol(),
-      ];
-    } while (
-      finalReels[0] === finalReels[1] &&
-      finalReels[1] === finalReels[2]
-    );
-  }
+      ]);
+    }, 70);
 
-  // Reel 1 spins
-  const reel1 = setInterval(() => {
-    setReels((r) => [randomSymbol(), r[1], r[2]]);
-  }, 70);
 
-  // Reel 2 spins
-  const reel2 = setInterval(() => {
-    setReels((r) => [r[0], randomSymbol(), r[2]]);
-  }, 70);
+    // Stop first reel
+    setTimeout(() => {
+      clearInterval(reel1);
 
-  // Reel 3 spins
-  const reel3 = setInterval(() => {
-    setReels((r) => [r[0], r[1], randomSymbol()]);
-  }, 70);
+      setReels((r) => [
+        finalReels[0],
+        r[1],
+        r[2],
+      ]);
 
-  // Stop reel 1
-  setTimeout(() => {
-    clearInterval(reel1);
-    setReels((r) => [finalReels[0], r[1], r[2]]);
-  }, 2200);
-  setSpinningReels([false, true, true]);
+      setSpinningReels([
+        false,
+        true,
+        true,
+      ]);
 
-  // Stop reel 2
-  setTimeout(() => {
-    clearInterval(reel2);
-    setReels((r) => [r[0], finalReels[1], r[2]]);
-  }, 3200);
-  setSpinningReels([false, false, true]);
+    }, 2200);
 
-  // Stop reel 3
-  setTimeout(() => {
-    clearInterval(reel3);
-    setReels(finalReels);
-    setSpinning(false);
-  }, 4200);
-  setSpinningReels([false, false, false]);
-};
+
+
+    // Stop second reel
+    setTimeout(() => {
+      clearInterval(reel2);
+
+      setReels((r) => [
+        r[0],
+        finalReels[1],
+        r[2],
+      ]);
+
+      setSpinningReels([
+        false,
+        false,
+        true,
+      ]);
+
+    }, 3200);
+
+
+
+    // Stop third reel
+    setTimeout(() => {
+      clearInterval(reel3);
+
+      setReels(finalReels);
+
+      setSpinningReels([
+        false,
+        false,
+        false,
+      ]);
+
+      setSpinning(false);
+
+    }, 4200);
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-950 via-black to-red-950 flex items-center justify-center px-4">
+
       <Card
         className="
           w-full
@@ -90,7 +157,7 @@ export default function SlotMachine() {
           overflow-hidden
         "
       >
-        {/* Top Lights */}
+
         <div className="flex justify-center gap-2 py-3 bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
           {Array.from({ length: 18 }).map((_, i) => (
             <div
@@ -100,7 +167,7 @@ export default function SlotMachine() {
           ))}
         </div>
 
-        {/* Title */}
+
         <div className="py-6 text-center">
           <h1
             className="
@@ -120,46 +187,49 @@ export default function SlotMachine() {
           </p>
         </div>
 
-        {/* Machine */}
+
         <div className="mx-6 rounded-2xl border-4 border-yellow-400 bg-black p-6 shadow-inner">
+
           <div className="grid grid-cols-3 gap-4">
+
             {reels.map((symbol, index) => (
+
               <div
                 key={index}
                 className={`
-                    h-32
-                    rounded-xl
-                    border-2
-                    border-yellow-300
-                    bg-white
-                    flex
-                    items-center
-                    justify-center
-                    text-[18px]
-                    font-extrabold
-                    text-center
-                    leading-tight
-                    px-2
-                    shadow-lg
-                    ${spinning ? "animate-bounce" : ""}
-                  `}
+                  h-32
+                  rounded-xl
+                  border-2
+                  border-yellow-300
+                  bg-white
+                  flex
+                  items-center
+                  justify-center
+                  text-[18px]
+                  font-extrabold
+                  text-center
+                  leading-tight
+                  px-2
+                  shadow-lg
+                  ${
+                    spinningReels[index]
+                      ? "animate-bounce"
+                      : ""
+                  }
+                `}
               >
                 {symbol}
               </div>
+
             ))}
+
           </div>
+
         </div>
 
-        {/* Lever */}
-        <div className="flex justify-end pr-10 -mt-24">
-          <div className="flex flex-col items-center">
-            <div className="w-3 h-28 bg-gray-300 rounded-full" />
-            <div className="w-10 h-10 rounded-full bg-red-600 border-4 border-white shadow-lg" />
-          </div>
-        </div>
 
-        {/* Controls */}
         <div className="flex justify-center py-10">
+
           <Button
             onClick={spin}
             disabled={spinning}
@@ -183,9 +253,10 @@ export default function SlotMachine() {
           >
             {spinning ? "SPINNING..." : "SPIN"}
           </Button>
+
         </div>
 
-        {/* Bottom Lights */}
+
         <div className="flex justify-center gap-2 py-3 bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
           {Array.from({ length: 18 }).map((_, i) => (
             <div
@@ -194,7 +265,10 @@ export default function SlotMachine() {
             />
           ))}
         </div>
+
+
       </Card>
+
     </div>
   );
 }
