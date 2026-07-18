@@ -212,7 +212,7 @@ export default function SlotMachine() {
               animate-pulse
             "
           >
-            VEGAS SLOT
+            CAMP SLOT
           </h1>
 
           <p
@@ -223,7 +223,7 @@ export default function SlotMachine() {
             text-sm
           "
           >
-            TRY YOUR LUCK
+            ΔΟΚΙΜΑΣΕ ΤΗΝ ΤΥΧΗ ΣΟΥ
           </p>
         </div>
 
