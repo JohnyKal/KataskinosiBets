@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "../@/components/ui/card";
 import { Button } from "../@/components/ui/button";
 
-const symbols = ["🍒", "🍋", "💎", "7️⃣", "🔔", "⭐"];
+const symbols = ["ΑΡΧΗΓΟΣ", "ΣΟΣ", "ΚΟΙΝΩΤΑΡΧΗΣ", "ΠΑΙΔΙ", "ΟΜΑΔΑΡΧΗΣ", "⭐"];
 
 export default function SlotMachine() {
   const [reels, setReels] = useState(["🍒", "🍋", "💎"]);
