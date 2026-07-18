@@ -127,18 +127,22 @@ export default function SlotMachine() {
               <div
                 key={index}
                 className={`
-                  h-32
-                  rounded-xl
-                  border-2
-                  border-yellow-300
-                  bg-white
-                  flex
-                  items-center
-                  justify-center
-                  text-6xl
-                  shadow-lg
-                  ${spinningReels[index] ? "animate-bounce" : ""}
-                `}
+                    h-32
+                    rounded-xl
+                    border-2
+                    border-yellow-300
+                    bg-white
+                    flex
+                    items-center
+                    justify-center
+                    text-[18px]
+                    font-extrabold
+                    text-center
+                    leading-tight
+                    px-2
+                    shadow-lg
+                    ${spinning ? "animate-bounce" : ""}
+                  `}
               >
                 {symbol}
               </div>
