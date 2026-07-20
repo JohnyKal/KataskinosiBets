@@ -1,17 +1,37 @@
+// import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { Card } from "../@/components/ui/card";
+// import { Button } from "../@/components/ui/button";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "../@/components/ui/card";
 import { Button } from "../@/components/ui/button";
 
+import { API_URL } from "../src/config";
+import { getToken } from "./utils/authToken";
+
+// const symbols = [
+//   { text: "ΑΡΧΗΓΟΣ", emoji: "🍀" },
+//   { text: "ΣΟΣ", emoji: "🔥" },
+//   { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐" },
+//   { text: "ΠΑΙΔΙ", emoji: "✨" },
+//   { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉" },
+// ];
+
 const symbols = [
-  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀" },
-  { text: "ΣΟΣ", emoji: "🔥" },
-  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐" },
-  { text: "ΠΑΙΔΙ", emoji: "✨" },
-  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉" },
+  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50 },
+  { text: "ΣΟΣ", emoji: "🔥", reward: 16 },
+  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 21 },
+  { text: "ΠΑΙΔΙ", emoji: "✨", reward: 12 },
+  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 18 },
 ];
 
-type SymbolType = (typeof symbols)[number];
+interface SymbolType {
+  text: string;
+  emoji: string;
+  reward: number;
+}
 
 export default function SlotMachine() {
   const navigate = useNavigate();
@@ -21,7 +41,13 @@ export default function SlotMachine() {
     symbols[1],
     symbols[2],
   ]);
+  const [reward, setReward] = useState(0);
 
+  const [score, setScore] = useState<number | null>(null);
+  
+  const [message, setMessage] = useState("");
+  
+  const [error, setError] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [spinningReels, setSpinningReels] = useState([false, false, false]);
   const [win, setWin] = useState(false);
@@ -29,71 +55,100 @@ export default function SlotMachine() {
   const randomSymbol = (): SymbolType =>
     symbols[Math.floor(Math.random() * symbols.length)];
 
-  const spin = () => {
-    if (spinning) return;
-
-    setSpinning(true);
-    setSpinningReels([true, true, true]);
-
-    const isWin = Math.random() < 0.3;
-
-    let finalReels: SymbolType[];
-
-    if (isWin) {
-      const symbol = randomSymbol();
-      finalReels = [symbol, symbol, symbol];
-    } else {
-      do {
-        finalReels = [randomSymbol(), randomSymbol(), randomSymbol()];
-      } while (
-        finalReels[0].text === finalReels[1].text &&
-        finalReels[1].text === finalReels[2].text
-      );
+  const spinRequest = async () => {
+    const token = getToken();
+  
+    const res = await fetch(`${API_URL}/api/slot/spin`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const data = await res.json();
+  
+    if (!res.ok) {
+      throw new Error(data.message);
     }
+  
+    return data;
+  };
 
-    const reel1 = setInterval(() => {
-      setReels((r) => [randomSymbol(), r[1], r[2]]);
-    }, 70);
-
-    const reel2 = setInterval(() => {
-      setReels((r) => [r[0], randomSymbol(), r[2]]);
-    }, 70);
-
-    const reel3 = setInterval(() => {
-      setReels((r) => [r[0], r[1], randomSymbol()]);
-    }, 70);
-
-    setTimeout(() => {
-      clearInterval(reel1);
-      setReels((r) => [finalReels[0], r[1], r[2]]);
-      setSpinningReels([false, true, true]);
-    }, 2200);
-
-    setTimeout(() => {
-      clearInterval(reel2);
-      setReels((r) => [r[0], finalReels[1], r[2]]);
-      setSpinningReels([false, false, true]);
-    }, 3200);
-
-    setTimeout(() => {
-      clearInterval(reel3);
-
-      setReels(finalReels);
-
-      if (
-        finalReels[0].text === finalReels[1].text &&
-        finalReels[1].text === finalReels[2].text
-      ) {
-        setWin(true);
-
-        setTimeout(() => {
-          setWin(false);
-        }, 3000);
-      }
-
-      setSpinningReels([false, false, false]);
+  const spin = async () => {
+    if (spinning) return;
+  
+    setError("");
+    setMessage("");
+    setReward(0);
+  
+    try {
+      setSpinning(true);
+      setSpinningReels([true, true, true]);
+  
+      const data = await spinRequest();
+  
+      setScore(data.score);
+  
+      const finalReels: SymbolType[] = data.reels;
+  
+      const reel1 = setInterval(() => {
+        setReels((r) => [randomSymbol(), r[1], r[2]]);
+      }, 70);
+  
+      const reel2 = setInterval(() => {
+        setReels((r) => [r[0], randomSymbol(), r[2]]);
+      }, 70);
+  
+      const reel3 = setInterval(() => {
+        setReels((r) => [r[0], r[1], randomSymbol()]);
+      }, 70);
+  
+      setTimeout(() => {
+        clearInterval(reel1);
+  
+        setReels((r) => [finalReels[0], r[1], r[2]]);
+  
+        setSpinningReels([false, true, true]);
+      }, 2200);
+  
+      setTimeout(() => {
+        clearInterval(reel2);
+  
+        setReels((r) => [r[0], finalReels[1], r[2]]);
+  
+        setSpinningReels([false, false, true]);
+      }, 3200);
+  
+      setTimeout(() => {
+        clearInterval(reel3);
+  
+        setReels(finalReels);
+  
+        if (data.win) {
+          setWin(true);
+  
+          setReward(data.reward);
+  
+          setMessage(`🎉 Κέρδισες ${data.reward} πόντους!`);
+  
+          setTimeout(() => {
+            setWin(false);
+          }, 3000);
+        } else {
+          setMessage("😢 Δεν κέρδισες αυτή τη φορά.");
+        }
+  
+        setSpinning(false);
+  
+        setSpinningReels([false, false, false]);
+      }, 4200);
+    } catch (err: any) {
       setSpinning(false);
-    }, 4200);
+  
+      setSpinningReels([false, false, false]);
+  
+      setError(err.message || "Κάτι πήγε στραβά.");
+    }
   };
 
   return (
@@ -179,7 +234,9 @@ export default function SlotMachine() {
                 🎉 WIN! 🎉
               </div>
 
-              <div className="text-4xl mt-4">🏆 JACKPOT 🏆</div>
+              <div className="text-4xl mt-4 font-bold text-white">
+  +{reward} ΠΟΝΤΟΙ 🏆
+</div>
             </div>
           </div>
         )}
@@ -235,6 +292,37 @@ export default function SlotMachine() {
             ΔΟΚΙΜΑΣΕ ΤΗΝ ΤΥΧΗ ΣΟΥ
           </p>
         </div>
+        <div className="mt-6 flex flex-col items-center gap-2">
+
+  <div className="rounded-xl bg-black/40 px-5 py-2 border border-yellow-500">
+
+    <span className="text-yellow-300 font-bold">
+      🎰 Κόστος περιστροφής:
+    </span>
+
+    <span className="ml-2 text-red-400 font-black">
+      -3 πόντοι
+    </span>
+
+  </div>
+
+  {score !== null && (
+
+    <div className="rounded-xl bg-green-900 px-5 py-2 border border-green-500">
+
+      <span className="text-white font-bold">
+        💰 Πόντοι:
+      </span>
+
+      <span className="ml-2 text-yellow-300 font-black">
+        {score}
+      </span>
+
+    </div>
+
+  )}
+
+</div>
 
         <div
           className="
@@ -285,7 +373,52 @@ export default function SlotMachine() {
             ))}
           </div>
         </div>
+        {message && (
 
+<div className="flex justify-center mb-6">
+
+  <div
+    className="
+      rounded-xl
+      border
+      border-green-500
+      bg-green-900/70
+      px-6
+      py-3
+      text-lg
+      font-bold
+      text-green-200
+    "
+  >
+    {message}
+  </div>
+
+</div>
+
+)}
+{error && (
+
+<div className="flex justify-center mb-6">
+
+  <div
+    className="
+      rounded-xl
+      border
+      border-red-500
+      bg-red-900/70
+      px-6
+      py-3
+      text-lg
+      font-bold
+      text-red-200
+    "
+  >
+    ❌ {error}
+  </div>
+
+</div>
+
+)}
         <div className="flex justify-center py-10">
           <Button
             onClick={spin}
@@ -308,7 +441,7 @@ export default function SlotMachine() {
               transition
             "
           >
-            {spinning ? "SPINNING..." : "SPIN"}
+            {spinning ? "🎰 ΓΥΡΙΖΕΙ..." : "🎰 SPIN (-3)"}
           </Button>
         </div>
 
