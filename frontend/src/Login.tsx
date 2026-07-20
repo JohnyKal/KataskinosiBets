@@ -22,14 +22,12 @@ type LoginProps = {
 export default function Login({ loginSuccess }: LoginProps) {
   const navigate = useNavigate();
 
-  const API_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:3000";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const [error, setError] = useState("");
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4">
-
       <h1
         className="
           text-white
@@ -44,7 +42,6 @@ export default function Login({ loginSuccess }: LoginProps) {
         Συνδέσου και παίξε! 🍀
       </h1>
 
-
       <Card
         className="
           w-full
@@ -58,9 +55,7 @@ export default function Login({ loginSuccess }: LoginProps) {
           shadow-[0_0_40px_rgba(255,215,0,0.35)]
         "
       >
-
         <CardHeader className="text-center">
-
           <CardTitle
             className="
               text-3xl
@@ -71,19 +66,13 @@ export default function Login({ loginSuccess }: LoginProps) {
             ΣΥΝΔΕΣΗ 🎰
           </CardTitle>
 
-
           <CardDescription className="text-gray-600">
-
             Μπες στον λογαριασμό σου και ξεκίνα τα στοιχήματα! <br />
-            Αναμονή max 14 δευτερόλεπτα (δωρεάν έκδοση) ⏳
-
+            <strong> Αναμονή max 14 δευτερόλεπτα</strong> (δωρεάν έκδοση) ⏳
           </CardDescription>
 
-
           <p className="text-sm mt-3">
-
             Δεν έχεις λογαριασμό;{" "}
-
             <Link
               to="/register"
               className="
@@ -94,76 +83,46 @@ export default function Login({ loginSuccess }: LoginProps) {
             >
               Εγγραφή
             </Link>
-
           </p>
-
         </CardHeader>
 
-
-
         <CardContent>
-
           <Formik<LogValues>
-
             initialValues={{
               name: "",
               password: "",
             }}
-
-
             onSubmit={async (values, { setSubmitting }) => {
-
               setError("");
 
               try {
+                const res = await fetch(`${API_URL}/api/auth/login`, {
+                  method: "POST",
 
-                const res = await fetch(
-                  `${API_URL}/api/auth/login`,
-                  {
-                    method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
 
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-
-                    body: JSON.stringify(values),
-                  }
-                );
-
+                  body: JSON.stringify(values),
+                });
 
                 if (!res.ok) {
-
                   setError("Λάθος όνομα ή κωδικός");
 
                   return;
                 }
 
-
-
                 const data = await res.json();
 
-
-                console.log(
-                  "Login response:",
-                  data
-                );
-
-
+                console.log("Login response:", data);
 
                 if (!data.token) {
+                  console.error("No token received!");
 
-                  console.error(
-                    "No token received!"
-                  );
-
-                  setError(
-                    "Δεν λήφθηκε token"
-                  );
+                  setError("Δεν λήφθηκε token");
 
                   return;
                 }
-
-
 
                 // Save JWT token
                 // localStorage if available
@@ -171,52 +130,25 @@ export default function Login({ loginSuccess }: LoginProps) {
 
                 setToken(data.token);
 
-
-
                 // Refresh authentication state
                 await loginSuccess();
 
-
-
                 navigate("/");
-
-
               } catch (err) {
+                console.error("Login error:", err);
 
-                console.error(
-                  "Login error:",
-                  err
-                );
-
-                setError(
-                  "Δεν ήταν δυνατή η σύνδεση"
-                );
-
-
+                setError("Δεν ήταν δυνατή η σύνδεση");
               } finally {
-
                 setSubmitting(false);
-
               }
-
             }}
-
           >
-
-
             {({ isSubmitting }) => (
-
               <Form className="flex flex-col gap-5">
-
-
                 <Field
-
                   name="name"
-
                   type="text"
-
                   placeholder="Όνομα"
-
                   className="
                     rounded-xl
                     border
@@ -228,19 +160,12 @@ export default function Login({ loginSuccess }: LoginProps) {
                     focus:ring-2
                     focus:ring-red-200
                   "
-
                 />
-
-
 
                 <Field
-
                   name="password"
-
                   type="password"
-
                   placeholder="Κωδικός"
-
                   className="
                     rounded-xl
                     border
@@ -252,13 +177,9 @@ export default function Login({ loginSuccess }: LoginProps) {
                     focus:ring-2
                     focus:ring-red-200
                   "
-
                 />
-
-
 
                 {error && (
-
                   <p
                     className="
                       text-center
@@ -268,17 +189,11 @@ export default function Login({ loginSuccess }: LoginProps) {
                   >
                     {error}
                   </p>
-
                 )}
 
-
-
                 <button
-
                   type="submit"
-
                   disabled={isSubmitting}
-
                   className="
                     mt-3
                     rounded-full
@@ -301,32 +216,14 @@ export default function Login({ loginSuccess }: LoginProps) {
                     active:shadow-[0_3px_0_#7f1d1d]
                     disabled:opacity-70
                   "
-
                 >
-
-                  {
-                    isSubmitting
-                      ? "Σύνδεση..."
-                      : "Σύνδεση 🎲"
-                  }
-
+                  {isSubmitting ? "Σύνδεση..." : "Σύνδεση 🎲"}
                 </button>
-
-
               </Form>
-
             )}
-
-
           </Formik>
-
-
         </CardContent>
-
-
       </Card>
-
-
     </div>
   );
 }
