@@ -30,9 +30,9 @@ function rollPrize() {
 
 export async function spinSlot(req: Request, res: Response) {
   try {
-    console.log("USER ID FROM TOKEN:", (req as any).user.id);
+    
     const userId = (req as any).user.id;
-
+    console.log("USER ID FROM TOKEN:", (req as any).user.id);
     const user = await UserModel.findById(userId);
 
     if (!user) {
