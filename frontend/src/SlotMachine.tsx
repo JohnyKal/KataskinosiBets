@@ -6,7 +6,7 @@ import { Button } from "../@/components/ui/button";
 const symbols = [
   { text: "ΑΡΧΗΓΟΣ", emoji: "🍀" },
   { text: "ΣΟΣ", emoji: "🔥" },
-  { text: "ΚΟΙΝΩΤΑΡΧΗΣ", emoji: "⭐" },
+  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐" },
   { text: "ΠΑΙΔΙ", emoji: "✨" },
   { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉" },
 ];
