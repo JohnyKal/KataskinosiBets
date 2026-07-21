@@ -27,7 +27,7 @@ function rollPrize() {
 
   return null;
 }
-
+console.log("test 1");
 export async function spinSlot(req: Request, res: Response) {
   try {
     console.log("SPIN ROUTE HIT");
@@ -36,7 +36,7 @@ export async function spinSlot(req: Request, res: Response) {
     const user = await UserModel.findById(userId);
 
     if (!user) {
-      return res.status(402).json({
+      return res.status(401).json({
         message: "User not found",
       });
     }
