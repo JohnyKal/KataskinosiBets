@@ -68,7 +68,8 @@ export default function Login({ loginSuccess }: LoginProps) {
 
           <CardDescription className="text-gray-600">
             Μπες στον λογαριασμό σου και ξεκίνα τα στοιχήματα! <br />
-            <strong> Αναμονή max 14 δευτερόλεπτα</strong> (δωρεάν έκδοση) ⏳
+            Αναμονή max <strong> 14 δευτερόλεπτα</strong> <br />
+             (δωρεάν έκδοση) ⏳
           </CardDescription>
 
           <p className="text-sm mt-3">

@@ -320,13 +320,25 @@ export default function App() {
 
           <Route path="/register" element={<Signup />} />
 
-          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route
+            path="/leaderboard"
+            element={user ? <Leaderboard /> : <Navigate to="/signin" replace />}
+          />
 
-          <Route path="/live_stoixima" element={<Stoixima />} />
+          <Route
+            path="/live_stoixima"
+            element={user ? <Stoixima /> : <Navigate to="/signin" replace />}
+          />
 
-          <Route path="/awesomeadmin" element={<Admin />} />
+          <Route
+            path="/awesomeadmin"
+            element={user ? <Admin /> : <Navigate to="/signin" replace />}
+          />
 
-          <Route path="/slotmachine" element={<SlotMachine />} />
+          <Route
+            path="/slotmachine"
+            element={user ? <SlotMachine /> : <Navigate to="/signin" replace />}
+          />
         </Routes>
       </div>
     </BrowserRouter>
