@@ -53,7 +53,7 @@ const userSchema = new Schema<IUser>({
 
   score: {
     type: Number,
-    default: 0,
+    default: 20,
     min: 0,
   },
 

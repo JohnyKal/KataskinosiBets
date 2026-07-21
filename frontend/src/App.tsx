@@ -77,7 +77,89 @@ export default function App() {
   useEffect(() => {
     checkAuth();
   }, []);
+  if (loading) {
+    return (
+      <BrowserRouter>
+        <div
+          className="
+            min-h-screen
+            flex
+            items-center
+            justify-center
+            text-white
+            bg-[radial-gradient(circle_at_50%_0%,#22c55e,#15803d_45%,#064e3b)]
+          "
+        >
+          <div
+            className="
+              flex
+              flex-col
+              items-center
+              gap-6
+              rounded-3xl
+              bg-green-950/80
+              border
+              border-yellow-500/40
+              px-10
+              py-12
+              shadow-[0_0_40px_rgba(234,179,8,0.35)]
+            "
+          >
+            <div className="relative">
+              <div
+                className="
+                  h-24
+                  w-24
+                  rounded-full
+                  border-8
+                  border-yellow-500/30
+                  border-t-yellow-400
+                  animate-spin
+                "
+              />
 
+              <div
+                className="
+                  absolute
+                  inset-0
+                  flex
+                  items-center
+                  justify-center
+                  text-4xl
+                "
+              >
+                🎰
+              </div>
+            </div>
+
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl font-bold text-yellow-400 animate-pulse">
+                Περίμενε να φορτώσει η ιστοσελίδα 🎲
+              </h2>
+
+              <p className="text-green-200 text-lg">
+                🕵️ Ξυπνάμε τους servers από το darkweb...
+              </p>
+            </div>
+
+            <div className="flex gap-3 text-3xl">
+              <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce">
+                🍒
+              </div>
+
+              <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-150">
+                7️⃣
+              </div>
+
+              <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-300">
+                💎
+              </div>
+            </div>
+          </div>
+        </div>
+      </BrowserRouter>
+    );
+  }
   return (
     <BrowserRouter>
       <div
@@ -200,9 +282,9 @@ export default function App() {
               </SheetHeader>
 
               <div className="mt-8 space-y-5">
-
-              <p className="rounded-xl bg-green-950/50 p-4 border border-blue-800">
-                  Κάνε εγγραφή και μετά σύνδεση. Η ιστοσελίδα μπόρεί να αργήσει 20s να φορτώσει διότι είναι η δωρεάν έκδοση...
+                <p className="rounded-xl bg-green-950/50 p-4 border border-blue-800">
+                  Κάνε εγγραφή και μετά σύνδεση. Η ιστοσελίδα μπόρεί να αργήσει
+                  20s να φορτώσει διότι είναι η δωρεάν έκδοση...
                 </p>
 
                 <div className="rounded-xl bg-black/20 p-4 border border-yellow-500/20">
@@ -214,7 +296,8 @@ export default function App() {
                 </div>
 
                 <p className="rounded-xl bg-green-950/50 p-4 border border-red-600">
-                  📞 Για οποιοδήποτε πρόβλημα: πάρε με απόκρυψη, ή στείλε σήματα καπνού, ή σύνταξε ένα email.
+                  📞 Για οποιοδήποτε πρόβλημα: πάρε με απόκρυψη, ή στείλε σήματα
+                  καπνού, ή σύνταξε ένα email.
                 </p>
               </div>
 
@@ -230,105 +313,7 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              loading ? (
-                <div
-                  className="
-                    min-h-screen
-                    flex
-                    items-center
-                    justify-center
-                    text-white
-                    bg-black/20
-                  "
-                >
-                  <div
-                    className="
-                      flex
-                      flex-col
-                      items-center
-                      gap-6
-                      rounded-3xl
-                      bg-green-950/80
-                      border
-                      border-yellow-500/40
-                      px-10
-                      py-12
-                      shadow-[0_0_40px_rgba(234,179,8,0.35)]
-                    "
-                  >
-                    {/* Casino loading icon */}
-                    <div className="relative">
-                      <div
-                        className="
-                          h-24
-                          w-24
-                          rounded-full
-                          border-8
-                          border-yellow-500/30
-                          border-t-yellow-400
-                          animate-spin
-                        "
-                      />
-
-                      <div
-                        className="
-                          absolute
-                          inset-0
-                          flex
-                          items-center
-                          justify-center
-                          text-4xl
-                        "
-                      >
-                        🎰
-                      </div>
-                    </div>
-
-                    <div className="text-center space-y-2">
-                      <h2
-                        className="
-                          text-2xl
-                          font-bold
-                          text-yellow-400
-                          animate-pulse
-                        "
-                      >
-                        Περίμενε να φορτώσει η ιστοσελίδα 🎲
-                      </h2>
-
-                      <p
-                        className="
-                          text-green-200
-                          text-lg
-                        "
-                      >
-                        🕵️ Ξυπνάμε τους servers από το darkweb...
-                      </p>
-                    </div>
-
-                    {/* Fake casino slots */}
-                    <div className="flex gap-3 text-3xl">
-                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce">
-                        🍒
-                      </div>
-
-                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-150">
-                        7️⃣
-                      </div>
-
-                      <div className="bg-black/50 rounded-lg px-3 py-2 border border-yellow-500/30 animate-bounce delay-300">
-                        💎
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : user ? (
-                <Home />
-              ) : (
-                <Navigate to="/signin" />
-              )
-            }
+            element={user ? <Home /> : <Navigate to="/signin" />}
           />
 
           <Route path="/signin" element={<Login loginSuccess={checkAuth} />} />
