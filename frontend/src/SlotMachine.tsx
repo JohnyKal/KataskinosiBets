@@ -87,7 +87,6 @@ export default function SlotMachine() {
   
       const data = await spinRequest();
   
-      setScore(data.score);
   
       const finalReels: SymbolType[] = data.reels;
   
@@ -123,6 +122,10 @@ export default function SlotMachine() {
         clearInterval(reel3);
   
         setReels(finalReels);
+
+
+  // UPDATE SCORE AFTER ANIMATION FINISHES
+  setScore(data.score);
   
         if (data.win) {
           setWin(true);
@@ -135,7 +138,7 @@ export default function SlotMachine() {
             setWin(false);
           }, 3000);
         } else {
-          setMessage("😢 Δεν κέρδισες αυτή τη φορά.");
+          setMessage("ΧΑΧΑΧΑ ΈΧΑΣΕΣ 😢😢!");
         }
   
         setSpinning(false);
