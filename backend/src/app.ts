@@ -42,6 +42,12 @@ app.use((req, res, next) => {
   console.log("REQUEST:", req.method, req.url);
   next();
 });
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+  });
+});
 // Simple route
 app.get("/", (req, res) => {
   res.send("Server is running");

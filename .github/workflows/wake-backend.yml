@@ -1,0 +1,16 @@
+name: Wake Backend
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wake backend
+        run: |
+          curl -I https://kataskinosibets.onrender.com
