@@ -31,12 +31,12 @@ console.log("test 1");
 export async function spinSlot(req: Request, res: Response) {
   try {
     console.log("SPIN ROUTE HIT");
-    const userId = (req as any).user.id;
+    const userId = (req as any).user.userId;
     console.log("USER ID FROM TOKEN:", (req as any).user.id);
     const user = await UserModel.findById(userId);
 
     if (!user) {
-      console.error("User not found for ID:", userId);
+      
       return res.status(401).json({
         message: "User not found",
       });

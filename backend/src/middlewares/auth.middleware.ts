@@ -32,7 +32,7 @@ export default function authMiddleware(
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 
-    req.user = decoded;
+    req.user = decoded as JwtPayload;
 
     next();
   } catch {
