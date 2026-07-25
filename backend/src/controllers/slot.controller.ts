@@ -2,11 +2,11 @@ import type { Request, Response } from "express";
 import { UserModel } from "../models/User.model.js";
 
 const symbols = [
-  { text: "ΠΑΙΔΙ", emoji: "✨", reward: 12, chance: 10.5 },
-  { text: "ΣΟΣ", emoji: "🔥", reward: 16, chance: 10.2 },
-  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 18, chance: 6.25 },
-  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 21, chance: 4.125 },
-  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50, chance: 1.925 },
+  { text: "ΠΑΙΔΙ", emoji: "✨", reward: 12, chance: 25 },
+  { text: "ΣΟΣ", emoji: "🔥", reward: 16, chance: 7 },
+  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 18, chance: 2.5 },
+  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 21, chance: 0.45 },
+  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50, chance: 0.05 },
 ];
 
 const randomSymbol = () =>
@@ -27,16 +27,23 @@ function rollPrize() {
 
   return null;
 }
+
 console.log("test 1");
+
 export async function spinSlot(req: Request, res: Response) {
   try {
     console.log("SPIN ROUTE HIT");
+
     const userId = (req as any).user.userId;
-    console.log("USER ID FROM TOKEN:", (req as any).user.id);
+
+    console.log(
+      "USER ID FROM TOKEN:",
+      (req as any).user.userId
+    );
+
     const user = await UserModel.findById(userId);
 
     if (!user) {
-      
       return res.status(401).json({
         message: "User not found",
       });
@@ -58,7 +65,11 @@ export async function spinSlot(req: Request, res: Response) {
     if (prize) {
       user.score += prize.reward;
 
-      reels = [prize, prize, prize];
+      reels = [
+        prize,
+        prize,
+        prize,
+      ];
     } else {
       do {
         reels = [
@@ -80,6 +91,7 @@ export async function spinSlot(req: Request, res: Response) {
       score: user.score,
       reels,
     });
+
   } catch (err) {
     console.error(err);
 
