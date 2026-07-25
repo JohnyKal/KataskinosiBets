@@ -65,6 +65,8 @@ export default function Signup({ checkAuth }: SignupProps) {
 
           <CardDescription className="text-gray-600">
             Φτιάξε λογαριασμό και μπες αμέσως στο παιχνίδι 🎰
+            Αναμονή max <strong> 18 δευτερόλεπτα</strong> <br />
+            (δωρεάν έκδοση) ⏳
           </CardDescription>
 
           <p className="text-sm mt-3">
