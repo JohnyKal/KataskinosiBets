@@ -17,6 +17,8 @@ interface Answer {
   bet: string;
   answer: string;
   time: string;
+  scored: boolean;
+  score: number;
 }
 
 export default function Admin() {
@@ -27,10 +29,6 @@ export default function Admin() {
 
   const [scores, setScores] = useState<{
     [key: string]: string;
-  }>({});
-
-  const [checkedAnswers, setCheckedAnswers] = useState<{
-    [key: string]: boolean;
   }>({});
 
   useEffect(() => {
@@ -70,7 +68,6 @@ export default function Admin() {
 
         headers: {
           "Content-Type": "application/json",
-
           Authorization: `Bearer ${token}`,
         },
 
@@ -98,7 +95,6 @@ export default function Admin() {
 
         headers: {
           "Content-Type": "application/json",
-
           Authorization: `Bearer ${token}`,
         },
 
@@ -107,11 +103,8 @@ export default function Admin() {
         }),
       });
 
-      setCheckedAnswers((prev) => ({
-        ...prev,
+      await fetchAnswers();
 
-        [key]: true,
-      }));
     } catch (error) {
       console.error(error);
     }
@@ -132,8 +125,12 @@ export default function Admin() {
       });
 
       setAnswers((prev) =>
-        prev.filter((item) => !(item.userId === userId && item.betId === betId))
+        prev.filter(
+          (item) =>
+            !(item.userId === userId && item.betId === betId)
+        )
       );
+
     } catch (error) {
       console.error(error);
     }
@@ -148,6 +145,7 @@ export default function Admin() {
       "
     >
       <div className="max-w-6xl mx-auto space-y-8">
+
         <Card className="bg-zinc-900 border-green-600 shadow-2xl">
           <CardHeader>
             <CardTitle className="text-3xl text-green-400">
@@ -161,6 +159,7 @@ export default function Admin() {
 
           <CardContent>
             <div className="flex flex-col md:flex-row gap-4">
+
               <input
                 value={newBet}
                 onChange={(e) => setNewBet(e.target.value)}
@@ -190,35 +189,48 @@ export default function Admin() {
               >
                 Add Bet
               </button>
+
             </div>
           </CardContent>
         </Card>
 
+
         {loading ? (
-          <div className="text-white text-center text-2xl">Loading...</div>
+          <div className="text-white text-center text-2xl">
+            Loading...
+          </div>
+
         ) : answers.length === 0 ? (
+
           <div className="text-white text-center text-xl">
             No answers found.
           </div>
+
         ) : (
+
           <div className="grid gap-6">
+
             {answers.map((item) => {
+
               const key = `${item.userId}-${item.betId}`;
 
               return (
+
                 <Card
                   key={key}
                   className={`
-                bg-zinc-900
-                shadow-xl
-                ${
-                  checkedAnswers[key]
-                    ? "border-emerald-400"
-                    : "border-green-700"
-                }
-                `}
+                  bg-zinc-900
+                  shadow-xl
+                  ${
+                    item.scored
+                      ? "border-emerald-400"
+                      : "border-green-700"
+                  }
+                  `}
                 >
+
                   <CardHeader>
+
                     <CardTitle className="text-green-400">
                       🎲 {item.bet}
                     </CardTitle>
@@ -226,32 +238,51 @@ export default function Admin() {
                     <CardDescription className="text-zinc-400">
                       Submitted by {item.name}
                     </CardDescription>
+
                   </CardHeader>
 
+
                   <CardContent>
+
                     <div className="grid md:grid-cols-3 gap-6">
-                      <div>
-                        <p className="text-zinc-400">👤 User:</p>
 
-                        <p className="text-white">{item.name}</p>
+                      <div>
+                        <p className="text-zinc-400">
+                          👤 User:
+                        </p>
+
+                        <p className="text-white">
+                          {item.name}
+                        </p>
                       </div>
 
-                      <div>
-                        <p className="text-zinc-400">💬 Answer:</p>
 
-                        <p className="text-white">{item.answer}</p>
+                      <div>
+                        <p className="text-zinc-400">
+                          💬 Answer:
+                        </p>
+
+                        <p className="text-white">
+                          {item.answer}
+                        </p>
                       </div>
 
+
                       <div>
-                        <p className="text-zinc-400">🕒 Time:</p>
+                        <p className="text-zinc-400">
+                          🕒 Time:
+                        </p>
 
                         <p className="text-white">
                           {new Date(item.time).toLocaleString()}
                         </p>
                       </div>
+
                     </div>
 
+
                     <div className="flex flex-col md:flex-row gap-3 mt-6">
+
                       <input
                         value={scores[key] || ""}
                         onChange={(e) =>
@@ -263,48 +294,61 @@ export default function Admin() {
                         placeholder="Give score"
                         type="number"
                         className="
-                      flex-1
-                      rounded-lg
-                      bg-zinc-800
-                      border
-                      border-zinc-700
-                      p-3
-                      text-white
-                      "
+                        flex-1
+                        rounded-lg
+                        bg-zinc-800
+                        border
+                        border-zinc-700
+                        p-3
+                        text-white
+                        "
                       />
 
+
                       <button
-                        onClick={() => submitAnswer(item.userId, item.betId)}
+                        onClick={() =>
+                          submitAnswer(item.userId, item.betId)
+                        }
                         className="
-                      bg-emerald-600
-                      hover:bg-emerald-500
-                      text-white
-                      px-6
-                      rounded-lg
-                      "
+                        bg-emerald-600
+                        hover:bg-emerald-500
+                        text-white
+                        px-6
+                        rounded-lg
+                        "
                       >
                         ✅ Save
                       </button>
 
+
                       <button
-                        onClick={() => deleteAnswer(item.userId, item.betId)}
+                        onClick={() =>
+                          deleteAnswer(item.userId, item.betId)
+                        }
                         className="
-                      bg-red-600
-                      hover:bg-red-500
-                      text-white
-                      px-6
-                      rounded-lg
-                      "
+                        bg-red-600
+                        hover:bg-red-500
+                        text-white
+                        px-6
+                        rounded-lg
+                        "
                       >
                         🚫 Remove
                       </button>
+
                     </div>
+
                   </CardContent>
+
                 </Card>
+
               );
             })}
+
           </div>
+
         )}
+
       </div>
     </div>
   );

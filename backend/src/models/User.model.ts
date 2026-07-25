@@ -4,6 +4,8 @@ export interface IUserAnswer {
   bet: Types.ObjectId;
   answer: string;
   time: Date;
+  scored: boolean;
+  score: number;
 }
 
 export interface IUser extends Document {
@@ -30,6 +32,16 @@ const userAnswerSchema = new Schema<IUserAnswer>(
     time: {
       type: Date,
       default: Date.now,
+    },
+
+    scored: {
+      type: Boolean,
+      default: false,
+    },
+
+    score: {
+      type: Number,
+      default: 0,
     },
   },
   {

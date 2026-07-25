@@ -15,6 +15,8 @@ export async function getAllAnswers(req: Request, res: Response) {
         bet: answer.bet?.question || "Deleted bet",
         answer: answer.answer,
         time: answer.time,
+        scored: answer.scored || false,
+        score: answer.score || 0,
       }))
     );
 
@@ -100,8 +102,21 @@ export async function updateAnswer(req: Request, res: Response) {
     }
 
 
-    // Add admin given points
+    // Prevent scoring the same answer twice
+    if (userAnswer.scored) {
+      return res.status(400).json({
+        message: "Answer already scored",
+      });
+    }
+
+
+    // Add points to user total score
     user.score += Number(score);
+
+
+    // Save scoring information on the answer itself
+    userAnswer.scored = true;
+    userAnswer.score = Number(score);
 
 
     await user.save();
