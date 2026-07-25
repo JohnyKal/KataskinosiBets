@@ -2,10 +2,10 @@ import type { Request, Response } from "express";
 import { UserModel } from "../models/User.model.js";
 
 const symbols = [
-  { text: "ΠΑΙΔΙ", emoji: "✨", reward: 12, chance: 25 },
-  { text: "ΣΟΣ", emoji: "🔥", reward: 16, chance: 7 },
-  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 18, chance: 2.5 },
-  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 21, chance: 0.45 },
+  { text: "ΠΑΙΔΙ", emoji: "✨", reward: 12, chance: 17 },
+  { text: "ΣΟΣ", emoji: "🔥", reward: 16, chance: 2 },
+  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 18, chance: 0.7 },
+  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 21, chance: 0.25 },
   { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50, chance: 0.05 },
 ];
 
