@@ -15,8 +15,11 @@ interface RegValues {
   name: string;
   password: string;
 }
+interface SignupProps {
+  checkAuth: () => Promise<void>;
+}
 
-export default function Signup() {
+export default function Signup({ checkAuth }: SignupProps) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -105,6 +108,8 @@ export default function Signup() {
                 const data = await res.json();
 
                 setToken(data.token);
+
+                await checkAuth();
 
                 navigate("/", { replace: true });
 
