@@ -4,36 +4,49 @@ import { signToken } from "../utils/jwt.js";
 
 export async function register(req: Request, res: Response) {
   try {
+    const { name, password } = req.body;
+
     // validate input
-    const data = req.body;
-    const exists = await UserModel.findOne({ name: data.name });
-    if (exists) {
-      return res.status(400).json({ error: "Email already in use" });
+    if (!name || !password) {
+      return res.status(400).json({
+        error: "Name and password are required",
+      });
     }
 
+    // check if user already exists
+    const exists = await UserModel.findOne({ name });
+
+    if (exists) {
+      return res.status(400).json({
+        error: "Username already exists",
+      });
+    }
+
+    // create new user
     const user = new UserModel({
-      //create new user
-      name: data.name,
-      password: data.password,
+      name,
+      password,
     });
 
-    await user.save(); //save the new user to database
+    await user.save();
 
-    //generate JWT token
+    // generate JWT token
     const token = signToken(user._id.toString());
 
-    //check here if it need any more work with JWT token, like sending it back to the client or storing it in a cookie
-
+    // send token back to frontend
     return res.status(201).json({
-      message: "User registered",
+      message: "User registered successfully",
       token,
       user: {
         id: user._id,
         name: user.name,
       },
     });
+
   } catch (err: any) {
-    return res.status(400).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message,
+    });
   }
 }
 

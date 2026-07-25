@@ -9,6 +9,7 @@ import {
 } from "../@/components/ui/card";
 import { API_URL } from "./config";
 import { useState } from "react";
+import { setToken } from "./utils/authToken";
 
 interface RegValues {
   name: string;
@@ -60,7 +61,7 @@ export default function Signup() {
           </CardTitle>
 
           <CardDescription className="text-gray-600">
-            Φτιάξε λογαριασμό, και μετά κάνε <strong>ΣΥΝΔΕΣΗ</strong>
+            Φτιάξε λογαριασμό και μπες αμέσως στο παιχνίδι 🎰
           </CardDescription>
 
           <p className="text-sm mt-3">
@@ -101,7 +102,12 @@ export default function Signup() {
                   return;
                 }
 
-                navigate("/signin");
+                const data = await res.json();
+
+                setToken(data.token);
+
+                navigate("/", { replace: true });
+
               } catch (err) {
                 setError("Κάτι πήγε στραβά");
               } finally {
@@ -147,10 +153,10 @@ export default function Signup() {
                 {error && (
                   <p
                     className="
-                  text-red-600
-                  text-center
-                  font-bold
-                "
+                    text-red-600
+                    text-center
+                    font-bold
+                  "
                   >
                     {error}
                   </p>
