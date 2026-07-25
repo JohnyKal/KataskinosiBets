@@ -65,12 +65,10 @@ export default function Admin() {
 
       await fetch(`${API_URL}/api/admin/bets`, {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-
         body: JSON.stringify({
           question: newBet,
         }),
@@ -86,39 +84,42 @@ export default function Admin() {
 
   async function submitAnswer(userId: string, betId: string) {
     const key = `${userId}-${betId}`;
-  
+
     if (!scores[key] || Number.isNaN(Number(scores[key]))) {
       alert("Give a valid score first");
       return;
     }
-  
+
     try {
       const token = getToken();
-  
-      const res = await fetch(`${API_URL}/api/admin/answers/${userId}/${betId}`, {
-        method: "PATCH",
-  
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-  
-        body: JSON.stringify({
-          score: Number(scores[key]),
-        }),
-      });
-  
+
+      const res = await fetch(
+        `${API_URL}/api/admin/answers/${userId}/${betId}`,
+        {
+          method: "PATCH",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+
+          body: JSON.stringify({
+            score: Number(scores[key]),
+          }),
+        }
+      );
+
       const data = await res.json();
-  
+
       console.log("ADMIN SCORE RESPONSE:", data);
-  
+
       if (!res.ok) {
         alert(data.message || "Failed to save score");
         return;
       }
-  
+
       await fetchAnswers();
-  
+
     } catch (error) {
       console.error(error);
     }
@@ -253,6 +254,21 @@ export default function Admin() {
                       Submitted by {item.name}
                     </CardDescription>
 
+                    {item.scored && (
+                      <div className="
+                      mt-3
+                      w-fit
+                      rounded-lg
+                      bg-emerald-600
+                      px-4
+                      py-2
+                      text-white
+                      font-semibold
+                      ">
+                        ✅ Scored ({item.score} points)
+                      </div>
+                    )}
+
                   </CardHeader>
 
 
@@ -299,6 +315,7 @@ export default function Admin() {
 
                       <input
                         value={scores[key] || ""}
+                        disabled={item.scored}
                         onChange={(e) =>
                           setScores((prev) => ({
                             ...prev,
@@ -315,23 +332,27 @@ export default function Admin() {
                         border-zinc-700
                         p-3
                         text-white
+                        disabled:opacity-50
                         "
                       />
 
 
                       <button
+                        disabled={item.scored}
                         onClick={() =>
                           submitAnswer(item.userId, item.betId)
                         }
                         className="
                         bg-emerald-600
                         hover:bg-emerald-500
+                        disabled:bg-zinc-600
+                        disabled:cursor-not-allowed
                         text-white
                         px-6
                         rounded-lg
                         "
                       >
-                        ✅ Save
+                        {item.scored ? "✅ Done" : "✅ Save"}
                       </button>
 
 
