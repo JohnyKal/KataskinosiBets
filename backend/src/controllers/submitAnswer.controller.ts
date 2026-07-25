@@ -29,11 +29,12 @@ export async function submitAnswer(req: Request, res: Response) {
     }
 
     user.answers.push({
-        bet: betId,
+      bet: betId,
       time: new Date(),
-      answer,
+      answer: answer,
+      scored: false,
+      score: 0,
     });
-
     await user.save();
 
     return res.status(200).json({
