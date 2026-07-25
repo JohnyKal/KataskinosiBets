@@ -2,11 +2,11 @@ import type { Request, Response } from "express";
 import { UserModel } from "../models/User.model.js";
 
 const symbols = [
-  { text: "ΚΑΤΑΣΚΗΝΩΤΗΣ", emoji: "✨", reward: 10, chance: 15 },
-  { text: "ΣΟΣ", emoji: "🔥", reward: 15, chance: 8 },
-  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 20, chance: 5 },
-  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 30, chance: 3 },
-  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50, chance: 2 },
+  { text: "ΚΑΤΑΣΚΗΝΩΤΗΣ", emoji: "✨", reward: 8, chance: 18 },
+  { text: "ΣΟΣ", emoji: "🔥", reward: 14, chance: 8 },
+  { text: "ΟΜΑΔΑΡΧΗΣ", emoji: "🎉", reward: 20, chance: 4 },
+  { text: "ΚΟΙΝΟΤΑΡΧΗΣ", emoji: "⭐", reward: 30, chance: 2 },
+  { text: "ΑΡΧΗΓΟΣ", emoji: "🍀", reward: 50, chance: 1 },
 ];
 
 const randomSymbol = () =>
@@ -63,6 +63,8 @@ export async function spinSlot(req: Request, res: Response) {
     let reels;
 
     if (prize) {
+      console.log("WIN:", prize.text);
+
       user.score += prize.reward;
 
       reels = [
@@ -71,6 +73,8 @@ export async function spinSlot(req: Request, res: Response) {
         prize,
       ];
     } else {
+      console.log("LOSE");
+
       do {
         reels = [
           randomSymbol(),
