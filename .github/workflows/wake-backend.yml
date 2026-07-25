@@ -13,4 +13,4 @@ jobs:
     steps:
       - name: Wake backend
         run: |
-          curl -I https://kataskinosibets.onrender.com
+          curl -I https://kataskinosibets.onrender.com/api/health
