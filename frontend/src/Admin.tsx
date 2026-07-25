@@ -86,25 +86,39 @@ export default function Admin() {
 
   async function submitAnswer(userId: string, betId: string) {
     const key = `${userId}-${betId}`;
-
+  
+    if (!scores[key] || Number.isNaN(Number(scores[key]))) {
+      alert("Give a valid score first");
+      return;
+    }
+  
     try {
       const token = getToken();
-
-      await fetch(`${API_URL}/api/admin/answers/${userId}/${betId}`, {
+  
+      const res = await fetch(`${API_URL}/api/admin/answers/${userId}/${betId}`, {
         method: "PATCH",
-
+  
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-
+  
         body: JSON.stringify({
           score: Number(scores[key]),
         }),
       });
-
+  
+      const data = await res.json();
+  
+      console.log("ADMIN SCORE RESPONSE:", data);
+  
+      if (!res.ok) {
+        alert(data.message || "Failed to save score");
+        return;
+      }
+  
       await fetchAnswers();
-
+  
     } catch (error) {
       console.error(error);
     }
