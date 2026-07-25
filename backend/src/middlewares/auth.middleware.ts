@@ -11,6 +11,8 @@ export default function authMiddleware(
   next: NextFunction
 ): asserts req is Request & { user: JwtPayload } {
 
+  console.log("AUTH MIDDLEWARE HIT");
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader?.startsWith("Bearer ")) {

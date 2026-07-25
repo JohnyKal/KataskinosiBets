@@ -35,11 +35,11 @@ export async function spinSlot(req: Request, res: Response) {
     console.log("USER ID FROM TOKEN:", (req as any).user.id);
     const user = await UserModel.findById(userId);
 
-    if (!user) {
-      return res.status(401).json({
-        message: "User not found",
-      });
-    }
+    // if (!user) {
+    //   return res.status(401).json({
+    //     message: "User not found",
+    //   });
+    // }
 
     if (user.score < 3) {
       return res.status(400).json({
